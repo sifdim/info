@@ -1,0 +1,362 @@
+# لوحة تحكم موقع سيفديم (Pages CMS)
+# كل قسم في الصفحة له ملف بيانات داخل مجلد _data، وهذه اللوحة تعرضه كنموذج تعبئة.
+
+media:
+  input: assets/img
+  output: /assets/img
+  extensions:
+  - png
+  - jpg
+  - jpeg
+  - webp
+  - svg
+  - gif
+content:
+- name: settings
+  label: الإعدادات العامة
+  type: file
+  path: _data/settings.yml
+  format: yaml
+  fields:
+  - name: beta
+    label: إظهار شارة «إطلاق تجريبي»
+    type: boolean
+    description: أطفئها يوم الإطلاق الرسمي.
+  - name: seo_title
+    label: عنوان الصفحة في المتصفح ومحركات البحث
+    type: string
+  - name: seo_description
+    label: وصف الموقع في نتائج البحث والمشاركة
+    type: text
+  - name: logo
+    label: الشعار في رأس الصفحة (للخلفيات الداكنة)
+    type: image
+  - name: footer_line
+    label: سطر التذييل
+    type: string
+  - name: footer_motto
+    label: الشعار في التذييل
+    type: string
+  - name: show_path
+    label: إظهار قسم مسار الممارس
+    type: boolean
+  - name: show_vision
+    label: إظهار قسم الرؤية والقيم
+    type: boolean
+  - name: show_model
+    label: إظهار قسم نموذج العمل
+    type: boolean
+  - name: show_kpis
+    label: إظهار قسم المؤشرات
+    type: boolean
+  - name: show_roadmap
+    label: إظهار قسم خارطة الطريق
+    type: boolean
+  - name: show_partners
+    label: إظهار قسم الشركاء
+    type: boolean
+  - name: show_founder
+    label: إظهار قسم المؤسس
+    type: boolean
+- name: hero
+  label: رأس الصفحة
+  type: file
+  path: _data/hero.yml
+  format: yaml
+  fields:
+  - name: kicker
+    label: السطر الصغير فوق العنوان
+    type: string
+  - name: title
+    label: العنوان الرئيسي
+    type: text
+  - name: lede
+    label: النص التعريفي
+    type: text
+  - name: verb_1
+    label: الكلمة تحت العمود الأول
+    type: string
+  - name: verb_2
+    label: الكلمة تحت العمود الأوسط
+    type: string
+  - name: verb_3
+    label: الكلمة تحت العمود الأخير
+    type: string
+  - name: ticker_ar
+    label: الشريط المتحرك - الشعار بالعربي
+    type: string
+  - name: ticker_en
+    label: الشريط المتحرك - الشعار بالإنجليزي
+    type: string
+  - name: ticker_en_1
+    label: الكلمة الأولى بالإنجليزي
+    type: string
+  - name: ticker_en_2
+    label: الكلمة الثانية بالإنجليزي
+    type: string
+  - name: ticker_en_3
+    label: الكلمة الثالثة بالإنجليزي
+    type: string
+- name: about
+  label: من نحن والميزة التنافسية
+  type: file
+  path: _data/about.yml
+  format: yaml
+  fields:
+  - name: label
+    label: اسم القسم
+    type: string
+  - name: statement
+    label: النص الرئيسي
+    type: text
+  - name: note
+    label: النص المساند
+    type: text
+  - name: edge_label
+    label: عنوان الميزة الصغير
+    type: string
+  - name: edge_title
+    label: الميزة التنافسية (بخط كبير)
+    type: string
+  - name: edge_text
+    label: شرح الميزة
+    type: text
+- name: path
+  label: مسار الممارس
+  type: file
+  path: _data/path.yml
+  format: yaml
+  fields:
+  - name: label
+    label: اسم القسم
+    type: string
+  - name: title
+    label: العنوان
+    type: string
+  - name: steps
+    label: الخطوات (الأخيرة تظهر ذهبية منفصلة عن القاعدة)
+    type: string
+    list: true
+- name: vision
+  label: الرؤية والرسالة والقيم
+  type: file
+  path: _data/vision.yml
+  format: yaml
+  fields:
+  - name: label
+    label: اسم القسم
+    type: string
+  - name: vision
+    label: الرؤية
+    type: text
+  - name: mission
+    label: الرسالة
+    type: text
+  - name: values
+    label: القيم
+    type: object
+    list: true
+    fields:
+    - name: name
+      label: القيمة
+      type: string
+    - name: text
+      label: الشرح
+      type: string
+- name: model
+  label: نموذج العمل والمحاور
+  type: file
+  path: _data/model.yml
+  format: yaml
+  fields:
+  - name: label
+    label: اسم القسم
+    type: string
+  - name: title
+    label: العنوان
+    type: string
+  - name: engines
+    label: محركات الإيراد
+    type: object
+    list: true
+    fields:
+    - name: tag
+      label: الاسم الصغير
+      type: string
+    - name: title
+      label: الوصف
+      type: text
+    - name: note
+      label: ملاحظة (اختيارية)
+      type: string
+  - name: pillars
+    label: المحاور الاستراتيجية
+    type: object
+    list: true
+    fields:
+    - name: title
+      label: المحور
+      type: string
+    - name: text
+      label: الشرح
+      type: text
+- name: kpis
+  label: مؤشرات الأداء
+  type: file
+  path: _data/kpis.yml
+  format: yaml
+  fields:
+  - name: label
+    label: اسم القسم
+    type: string
+  - name: title
+    label: العنوان
+    type: string
+  - name: items
+    label: المؤشرات
+    type: object
+    list: true
+    fields:
+    - name: name
+      label: المؤشر
+      type: string
+    - name: value
+      label: القيمة
+      type: string
+    - name: note
+      label: الوصف الصغير
+      type: string
+- name: roadmap
+  label: خارطة الطريق والإنجازات
+  type: file
+  path: _data/roadmap.yml
+  format: yaml
+  fields:
+  - name: label
+    label: اسم القسم
+    type: string
+  - name: title
+    label: العنوان
+    type: string
+  - name: years
+    label: السنوات
+    type: object
+    list: true
+    fields:
+    - name: year
+      label: السنة
+      type: string
+    - name: stage
+      label: المرحلة
+      type: string
+    - name: text
+      label: الوصف
+      type: text
+    - name: done
+      label: أُنجزت (معيّن ممتلئ)
+      type: boolean
+  - name: facts_title
+    label: عنوان الإنجازات
+    type: string
+  - name: facts
+    label: الإنجازات
+    type: object
+    list: true
+    fields:
+    - name: bold
+      label: بداية الجملة (بخط عريض)
+      type: string
+    - name: text
+      label: بقية الجملة
+      type: string
+- name: partners
+  label: الشركاء
+  type: file
+  path: _data/partners.yml
+  format: yaml
+  fields:
+  - name: label
+    label: اسم القسم
+    type: string
+  - name: title
+    label: العنوان
+    type: string
+  - name: lead
+    label: سطر تعريفي (اختياري)
+    type: text
+  - name: items
+    label: الشركاء
+    type: object
+    list: true
+    fields:
+    - name: name
+      label: اسم الشريك
+      type: string
+    - name: logo
+      label: الشعار
+      type: image
+    - name: url
+      label: رابط موقعه (اختياري)
+      type: string
+    - name: note
+      label: نوع الشراكة (اختياري)
+      type: string
+- name: founder
+  label: المؤسس
+  type: file
+  path: _data/founder.yml
+  format: yaml
+  fields:
+  - name: label
+    label: اسم القسم
+    type: string
+  - name: name
+    label: الاسم
+    type: string
+  - name: bio
+    label: النبذة
+    type: text
+  - name: photo
+    label: الصورة الشخصية (طولية، اتركها فارغة لإخفائها)
+    type: image
+  - name: stages
+    label: المراحل
+    type: object
+    list: true
+    fields:
+    - name: year
+      label: السنة
+      type: string
+    - name: title
+      label: المرحلة
+      type: string
+    - name: text
+      label: الوصف
+      type: text
+- name: contact
+  label: التواصل
+  type: file
+  path: _data/contact.yml
+  format: yaml
+  fields:
+  - name: label
+    label: اسم القسم
+    type: string
+  - name: title
+    label: العنوان
+    type: string
+  - name: lead
+    label: السطر تحت العنوان
+    type: string
+  - name: email
+    label: البريد
+    type: string
+  - name: whatsapp
+    label: رقم واتساب كما يظهر
+    type: string
+  - name: whatsapp_intl
+    label: رقم واتساب الدولي للرابط (بدون صفر وبدون +)
+    type: string
+  - name: whatsapp_button
+    label: نص زر واتساب
+    type: string
