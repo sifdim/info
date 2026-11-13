@@ -1,5 +1,0 @@
-# إعدادات بناء الموقع على قيت هب (Jekyll)
-encoding: utf-8
-lang: ar
-exclude:
-  - README.md
