@@ -1,0 +1,7 @@
+# إعدادات بناء الموقع على قيت هب (Jekyll)
+encoding: utf-8
+lang: ar
+# بدون قالب جاهز من قيت هب: الموقع له تصميمه الخاص
+theme: null
+exclude:
+  - README.md

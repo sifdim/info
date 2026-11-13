@@ -1,0 +1,241 @@
+---
+# هذه الصفحة تُبنى من ملفات _data التي تعدّلها من لوحة التحكم
+# layout: null يمنع قيت هب من تغليف الصفحة بقالب جاهز
+layout: null
+---
+{%- assign s = site.data.settings -%}
+{%- assign hero = site.data.hero -%}
+{%- assign about = site.data.about -%}
+{%- assign ps = site.data.path -%}
+{%- assign vision = site.data.vision -%}
+{%- assign model = site.data.model -%}
+{%- assign kpis = site.data.kpis -%}
+{%- assign roadmap = site.data.roadmap -%}
+{%- assign founder = site.data.founder -%}
+{%- assign contact = site.data.contact -%}
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ s.seo_title }}</title>
+  <meta name="description" content="{{ s.seo_description | escape }}">
+  <meta name="theme-color" content="#0B1426">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="سيفديم">
+  <meta property="og:title" content="{{ s.seo_title | escape }}">
+  <meta property="og:description" content="{{ s.seo_description | escape }}">
+  <meta property="og:image" content="{{ '/assets/img/qatt-band.png' | absolute_url }}">
+
+  <link rel="icon" type="image/png" href="{{ '/assets/img/favicon.png' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
+  <link rel="preload" href="{{ '/assets/fonts/IBMPlexSansArabic-Bold.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ '/assets/css/brand.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/sifdim.css' | relative_url }}">
+</head>
+<body>
+
+<header class="hero">
+  {%- if s.beta %}
+  <div class="beta" role="note" aria-label="إطلاق تجريبي"><span><i></i>إطلاق تجريبي<i></i><small>Beta</small></span></div>
+  {%- endif %}
+
+  <div class="wrap">
+    <div class="hero-top">
+      <img class="logo" src="{{ s.logo | relative_url }}" alt="سيفديم" height="52">
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <p class="kick">{{ hero.kicker }}</p>
+        <h1>{{ hero.title }}</h1>
+        <p class="lede">{{ hero.lede }}</p>
+      </div>
+
+      <!-- رمز سيفديم بأبعاد الدليل (7u × 5u): القاعدة هي المؤسسة، والأعمدة هم الممارسون -->
+      <figure class="sigil" aria-hidden="true">
+        <svg viewBox="0 0 7 5" role="presentation">
+          <rect class="base" x="0" y="4" width="7" height="1" rx=".5"/>
+          <rect class="col c1" x="6" y="1.5" width="1" height="2.1" rx=".5"/>
+          <rect class="col c2" x="4" y="0" width="1" height="3.6" rx=".5"/>
+          <rect class="col c3" x="2" y="1.5" width="1" height="2.1" rx=".5"/>
+        </svg>
+        <div class="verbs"><span class="v1">{{ hero.verb_1 }}</span><span class="v2">{{ hero.verb_2 }}</span><span class="v3">{{ hero.verb_3 }}</span></div>
+        <span class="star" style="top:-6%;left:8%"></span>
+        <span class="star" style="top:18%;left:-4%;width:8px;height:8px"></span>
+        <span class="star" style="top:-14%;left:84%;width:9px;height:9px"></span>
+      </figure>
+    </div>
+  </div>
+
+  <p class="sr">{{ hero.ticker_ar }}. {{ hero.verb_1 }}، {{ hero.verb_2 }}، {{ hero.verb_3 }}. {{ hero.ticker_en }}.</p>
+  <div class="ticker" aria-hidden="true">
+    <div class="tk ar" dir="rtl" lang="ar"><span class="p">{{ hero.ticker_ar }}</span><i></i><span class="v">{{ hero.verb_1 }}</span><i></i><span class="v w2">{{ hero.verb_2 }}</span><i></i><span class="v w3">{{ hero.verb_3 }}</span><i></i></div>
+    <div class="tk en" lang="en"><span class="p">{{ hero.ticker_en }}</span><i></i><span class="v">{{ hero.ticker_en_1 }}</span><i></i><span class="v w2">{{ hero.ticker_en_2 }}</span><i></i><span class="v w3">{{ hero.ticker_en_3 }}</span><i></i></div>
+  </div>
+</header>
+
+<main>
+
+<section class="band" id="about">
+  <div class="wrap sec">
+    <p class="side">{{ about.label }}</p>
+    <div>
+      <p class="statement">{{ about.statement }}</p>
+      {%- if about.note != blank %}
+      <p class="note">{{ about.note }}</p>
+      {%- endif %}
+      <div class="edge">
+        <p class="kicker">{{ about.edge_label }}</p>
+        <p class="huge">{{ about.edge_title }}</p>
+        <span class="bar" aria-hidden="true"></span>
+        <p class="why">{{ about.edge_text }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band plain" id="path">
+  <div class="wrap sec">
+    <p class="side">{{ ps.label }}</p>
+    <div>
+      <h2>{{ ps.title }}</h2>
+      <ol class="rise" style="--n:{{ ps.steps.size }}">
+        {%- for step in ps.steps %}
+        {%- if forloop.last %}
+        <li class="free" style="--h:{{ forloop.index | minus: 0.6 }}"><i></i><span>{{ step }}</span></li>
+        {%- else %}
+        <li style="--h:{{ forloop.index }}"><i></i><span>{{ step }}</span></li>
+        {%- endif %}
+        {%- endfor %}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="band warm" id="vision">
+  <div class="wrap sec">
+    <p class="side">{{ vision.label }}</p>
+    <div>
+      <p class="vision">{{ vision.vision }}</p>
+      <p class="mission"><strong>رسالتنا:</strong> {{ vision.mission }}</p>
+      <dl class="values" aria-label="قيمنا">
+        {%- for v in vision.values %}
+        <div><dt>{{ v.name }}</dt><dd>{{ v.text }}</dd></div>
+        {%- endfor %}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="model">
+  <div class="wrap sec">
+    <p class="side">{{ model.label }}</p>
+    <div>
+      <h2>{{ model.title }}</h2>
+      <div class="engines">
+        {%- for e in model.engines %}
+        <div class="engine">
+          <span class="bar" aria-hidden="true"></span>
+          <p class="tag">{{ e.tag }}</p>
+          <h3>{{ e.title }}</h3>
+          {%- if e.note != blank %}
+          <p class="first">{{ e.note }}</p>
+          {%- endif %}
+        </div>
+        {%- endfor %}
+      </div>
+      <div class="pillars">
+        {%- for p in model.pillars %}
+        <div><h3>{{ p.title }}</h3><p>{{ p.text }}</p></div>
+        {%- endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band dark" id="kpis">
+  <div class="wrap sec">
+    <p class="side">{{ kpis.label }}</p>
+    <div>
+      <h2>{{ kpis.title }}</h2>
+      <div class="ledger">
+        {%- for k in kpis.items %}
+        <div class="row"><div><p class="n">{{ k.name }}</p><p class="b">{{ k.note }}</p></div><p class="v">{{ k.value }}</p></div>
+        {%- endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="roadmap">
+  <div class="wrap sec">
+    <p class="side">{{ roadmap.label }}</p>
+    <div>
+      <h2>{{ roadmap.title }}</h2>
+      <ol class="years" style="--n:{{ roadmap.years.size }}">
+        {%- for y in roadmap.years %}
+        <li{% if y.done %} class="done"{% endif %}><b>{{ y.year }}</b><span>{{ y.stage }}</span><p>{{ y.text }}</p></li>
+        {%- endfor %}
+      </ol>
+      {%- if roadmap.facts.size > 0 %}
+      <p class="facts-cap">{{ roadmap.facts_title }}</p>
+      <ul class="facts">
+        {%- for f in roadmap.facts %}
+        <li><span><b>{{ f.bold }}</b> {{ f.text }}</span></li>
+        {%- endfor %}
+      </ul>
+      {%- endif %}
+    </div>
+  </div>
+</section>
+
+<section class="band plain" id="founder">
+  <div class="wrap sec">
+    <p class="side">{{ founder.label }}</p>
+    <div class="founder{% if founder.photo != blank %} has-photo{% endif %}">
+      <div>
+        <h2>{{ founder.name }}</h2>
+        <p class="statement">{{ founder.bio }}</p>
+        <ol class="stages">
+          {%- for st in founder.stages %}
+          <li><b>{{ st.year }}</b><div><strong>{{ st.title }}</strong><p>{{ st.text }}</p></div></li>
+          {%- endfor %}
+        </ol>
+      </div>
+      {%- if founder.photo != blank %}
+      <figure class="portrait"><img src="{{ founder.photo | relative_url }}" alt="{{ founder.name }}"></figure>
+      {%- endif %}
+    </div>
+  </div>
+</section>
+
+<section class="band dark contact" id="contact">
+  <div class="wrap sec">
+    <p class="side">{{ contact.label }}</p>
+    <div>
+      <h2>{{ contact.title }}</h2>
+      <p class="lead">{{ contact.lead }}</p>
+      <div class="reach">
+        <div class="row"><span class="lbl">البريد</span><a class="big" id="mail" href="mailto:{{ contact.email }}">{{ contact.email }}</a><button type="button" class="btn ghost" id="copy">نسخ البريد</button></div>
+        <div class="row"><span class="lbl">واتساب</span><a class="big" href="https://wa.me/{{ contact.whatsapp_intl }}" target="_blank" rel="noopener">{{ contact.whatsapp }}</a><a class="btn" href="https://wa.me/{{ contact.whatsapp_intl }}" target="_blank" rel="noopener">{{ contact.whatsapp_button }}</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <img class="qatt" src="{{ '/assets/img/qatt-band.png' | relative_url }}" alt="" width="2400" height="594">
+  <div class="wrap">
+    <span>{{ s.footer_line }}</span>
+    <span>{{ s.footer_motto }}</span>
+  </div>
+</footer>
+
+<script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
+</body>
+</html>
