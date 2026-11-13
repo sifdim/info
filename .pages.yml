@@ -58,6 +58,17 @@ content:
   - name: show_founder
     label: إظهار قسم المؤسس
     type: boolean
+  - name: umami_website_id
+    label: رقم الموقع في Umami (للإحصاءات)
+    type: string
+    description: من إعدادات الموقع في Umami، الحقل Website ID.
+  - name: umami_share_url
+    label: رابط مشاركة الإحصاءات من Umami
+    type: string
+    description: يظهر داخل صفحة admin.
+  - name: cms_url
+    label: رابط لوحة التحكم
+    type: string
 - name: hero
   label: رأس الصفحة
   type: file
