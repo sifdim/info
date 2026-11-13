@@ -1,6 +1,7 @@
 beta: true
 seo_title: سيفديم | نوقظ قدرات المجتمع، ونمكّنها، ثم نطلقها
-seo_description: 'مؤسسة سيفديم للحلول المبتكرة: مظلة مؤسسية لتشغيل أبناء المجتمع في العمل الحر المحوكم، نؤهّلهم عبر مشاريعنا التخصصية ونشغّلهم بعقود موثقة.'
+seo_description: "مؤسسة سيفديم للحلول المبتكرة: مظلة مؤسسية لتشغيل أبناء المجتمع
+  في العمل الحر المحوكم، نؤهّلهم عبر مشاريعنا التخصصية ونشغّلهم بعقود موثقة."
 logo: /assets/img/logo-on-dark.png
 footer_line: مؤسسة سيفديم للحلول المبتكرة، أبها، المملكة العربية السعودية
 footer_motto: من المجتمع، وإلى المجتمع
@@ -11,6 +12,7 @@ show_kpis: true
 show_roadmap: true
 show_partners: true
 show_founder: true
-umami_website_id: ''
-umami_share_url: ''
+umami_website_id: b06527c4-2447-4bfd-a4e1-a8a0415362ef
+umami_share_url: <script defer src="https://cloud.umami.is/script.js"
+  data-website-id="b06527c4-2447-4bfd-a4e1-a8a0415362ef"></script>
 cms_url: https://app.pagescms.org/sifdim/info/main
