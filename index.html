@@ -35,6 +35,9 @@ layout: null
   <link rel="preload" href="{{ '/assets/fonts/IBMPlexSansArabic-Bold.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{ '/assets/css/brand.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/sifdim.css' | relative_url }}">
+  {%- if s.umami_website_id != blank %}
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="{{ s.umami_website_id }}"></script>
+  {%- endif %}
 </head>
 <body>
 

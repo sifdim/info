@@ -11,3 +11,6 @@ show_kpis: true
 show_roadmap: true
 show_partners: true
 show_founder: true
+umami_website_id: ''
+umami_share_url: ''
+cms_url: https://app.pagescms.org/sifdim/info/main

@@ -210,7 +210,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
   .values{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pillars{grid-template-columns:repeat(2,minmax(0,1fr))}
   .founder.has-photo{grid-template-columns:1fr}
-  .portrait{max-width:240px}
+  .portrait{order:-1;justify-self:start;width:min(56%,220px)}
 }
 @media (max-width:720px){
   .hero-top .logo{height:44px}

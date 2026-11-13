@@ -1,36 +1,59 @@
+---
+# صفحة الإدارة: تعديل المحتوى والإحصاءات في مكان واحد
+layout: null
+---
+{%- assign s = site.data.settings -%}
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>لوحة تحكم سيفديم</title>
-  <!-- العنوان الذي تفتحه هذه الصفحة: لوحة Pages CMS على مستودع الموقع (الحساب/المستودع/الفرع) -->
-  <meta http-equiv="refresh" content="1; url=https://app.pagescms.org/sifdim/info/main">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <link rel="stylesheet" href="../assets/css/brand.css">
+  <title>لوحة سيفديم</title>
+  <link rel="icon" type="image/png" href="{{ '/assets/img/favicon.png' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/brand.css' | relative_url }}">
   <style>
-    html,body{margin:0;height:100%;background:var(--sifdim-navy);color:#C3CAD6;font-family:var(--font)}
-    main{min-height:100%;display:grid;place-content:center;justify-items:center;gap:22px;padding:24px;text-align:center}
-    img{height:48px;width:auto}
-    h1{margin:0;font-size:24px;font-weight:600;color:#FBF8F2}
-    p{margin:0;font-size:16px;line-height:1.8}
-    a.btn{display:inline-block;font-size:15px;font-weight:600;color:var(--sifdim-navy);background:var(--sifdim-gold);border-radius:999px;padding:9px 22px;text-decoration:none}
-    a.btn:focus-visible{outline:2px solid #FBF8F2;outline-offset:3px}
-    small{font-size:14px;color:#8E98A9}
-    small a{color:var(--sifdim-gold)}
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--sifdim-navy);color:#C3CAD6;font-family:var(--font)}
+    .wrap{max-width:1160px;margin:0 auto;padding:28px 24px 40px}
+    header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:18px 24px;padding-bottom:24px;border-bottom:1px solid var(--navy-2)}
+    header img{height:44px;width:auto;display:block}
+    h1{margin:0;font-size:22px;font-weight:600;color:#FBF8F2}
+    .actions{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-block;font-size:15px;font-weight:600;color:var(--sifdim-navy);background:var(--sifdim-gold);border-radius:999px;padding:9px 20px;text-decoration:none}
+    .btn.ghost{background:transparent;color:#E9E4D8;box-shadow:inset 0 0 0 1px #3A4866}
+    .btn:focus-visible{outline:2px solid #FBF8F2;outline-offset:3px}
+    h2{margin:28px 0 14px;font-size:17px;font-weight:600;color:#E9E4D8}
+    .stats{width:100%;height:78vh;min-height:560px;border:0;border-radius:16px;background:#fff;display:block}
+    .empty{border:1px dashed #3A4866;border-radius:16px;padding:28px;line-height:1.9;font-size:16px}
+    .empty b{color:#E9E4D8}
   </style>
 </head>
 <body>
-<main>
-  <img src="../assets/img/logo-on-dark.png" alt="سيفديم">
-  <h1>جارٍ فتح لوحة التحكم</h1>
-  <p>الدخول بحساب قيت هب الذي يملك صلاحية على مستودع الموقع.</p>
-  <a class="btn" href="https://app.pagescms.org/sifdim/info/main">فتح لوحة التحكم</a>
-  <small>إذا لم تفتح، ادخل من <a href="https://app.pagescms.org">الصفحة الرئيسية للوحة</a> واختر المستودع.</small>
-</main>
-<script>
-  setTimeout(function () { location.replace('https://app.pagescms.org/sifdim/info/main'); }, 600);
-</script>
+<div class="wrap">
+  <header>
+    <div style="display:flex;align-items:center;gap:16px">
+      <img src="{{ s.logo | relative_url }}" alt="سيفديم">
+      <h1>لوحة الإدارة</h1>
+    </div>
+    <div class="actions">
+      <a class="btn" href="{{ s.cms_url | default: 'https://app.pagescms.org' }}">تعديل محتوى الموقع</a>
+      {%- if s.umami_share_url != blank %}
+      <a class="btn ghost" href="{{ s.umami_share_url }}" target="_blank" rel="noopener">فتح الإحصاءات كاملة</a>
+      {%- endif %}
+      <a class="btn ghost" href="{{ '/' | relative_url }}">عرض الموقع</a>
+    </div>
+  </header>
+
+  <h2>إحصاءات الزوار</h2>
+  {%- if s.umami_share_url != blank %}
+  <iframe class="stats" src="{{ s.umami_share_url }}" title="إحصاءات موقع سيفديم" loading="lazy"></iframe>
+  {%- else %}
+  <div class="empty">
+    <b>لم تُربط الإحصاءات بعد.</b><br>
+    أنشئ حساباً مجانياً في Umami وأضف موقعك، ثم ضع رقم الموقع ورابط المشاركة في «الإعدادات العامة» من لوحة التحكم، وستظهر الإحصاءات هنا.
+  </div>
+  {%- endif %}
+</div>
 </body>
 </html>
