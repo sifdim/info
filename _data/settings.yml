@@ -4,3 +4,10 @@ seo_description: 'مؤسسة سيفديم للحلول المبتكرة: مظل�
 logo: /assets/img/logo-on-dark.png
 footer_line: مؤسسة سيفديم للحلول المبتكرة، أبها، المملكة العربية السعودية
 footer_motto: من المجتمع، وإلى المجتمع
+show_path: true
+show_vision: true
+show_model: true
+show_kpis: true
+show_roadmap: true
+show_partners: true
+show_founder: true

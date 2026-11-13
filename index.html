@@ -13,6 +13,7 @@ layout: null
 {%- assign roadmap = site.data.roadmap -%}
 {%- assign founder = site.data.founder -%}
 {%- assign contact = site.data.contact -%}
+{%- assign partners = site.data.partners -%}
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -97,6 +98,7 @@ layout: null
   </div>
 </section>
 
+{%- if s.show_path != false %}
 <section class="band plain" id="path">
   <div class="wrap sec">
     <p class="side">{{ ps.label }}</p>
@@ -114,7 +116,9 @@ layout: null
     </div>
   </div>
 </section>
+{%- endif %}
 
+{%- if s.show_vision != false %}
 <section class="band warm" id="vision">
   <div class="wrap sec">
     <p class="side">{{ vision.label }}</p>
@@ -129,7 +133,9 @@ layout: null
     </div>
   </div>
 </section>
+{%- endif %}
 
+{%- if s.show_model != false %}
 <section class="band" id="model">
   <div class="wrap sec">
     <p class="side">{{ model.label }}</p>
@@ -155,7 +161,9 @@ layout: null
     </div>
   </div>
 </section>
+{%- endif %}
 
+{%- if s.show_kpis != false %}
 <section class="band dark" id="kpis">
   <div class="wrap sec">
     <p class="side">{{ kpis.label }}</p>
@@ -169,7 +177,9 @@ layout: null
     </div>
   </div>
 </section>
+{%- endif %}
 
+{%- if s.show_roadmap != false %}
 <section class="band" id="roadmap">
   <div class="wrap sec">
     <p class="side">{{ roadmap.label }}</p>
@@ -191,8 +201,35 @@ layout: null
     </div>
   </div>
 </section>
+{%- endif %}
 
-<section class="band plain" id="founder">
+{%- if s.show_partners != false and partners.items.size > 0 %}
+<section class="band plain" id="partners">
+  <div class="wrap sec">
+    <p class="side">{{ partners.label }}</p>
+    <div>
+      <h2>{{ partners.title }}</h2>
+      {%- if partners.lead != blank %}
+      <p class="note">{{ partners.lead }}</p>
+      {%- endif %}
+      <ul class="partners">
+        {%- for pt in partners.items %}
+        <li>
+          {%- if pt.url != blank %}<a href="{{ pt.url }}" target="_blank" rel="noopener">{% endif %}
+          {%- if pt.logo != blank %}<img src="{{ pt.logo | relative_url }}" alt="{{ pt.name }}" loading="lazy">{% endif %}
+          <span class="pn">{{ pt.name }}</span>
+          {%- if pt.note != blank %}<span class="pt">{{ pt.note }}</span>{% endif %}
+          {%- if pt.url != blank %}</a>{% endif %}
+        </li>
+        {%- endfor %}
+      </ul>
+    </div>
+  </div>
+</section>
+{%- endif %}
+
+{%- if s.show_founder != false %}
+<section class="band" id="founder">
   <div class="wrap sec">
     <p class="side">{{ founder.label }}</p>
     <div class="founder{% if founder.photo != blank %} has-photo{% endif %}">
@@ -211,6 +248,7 @@ layout: null
     </div>
   </div>
 </section>
+{%- endif %}
 
 <section class="band dark contact" id="contact">
   <div class="wrap sec">
