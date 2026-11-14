@@ -1,0 +1,200 @@
+{%- comment -%}
+  صفحة «تحت الإنشاء»: تظهر بدل الموقع كله حين يُشغَّل الزر من الإعدادات العامة.
+  صاحب الموقع يرى الموقع الحقيقي من رابط المعاينة: sifdim.sa/?preview=رمز-المعاينة
+{%- endcomment -%}
+{%- assign s = site.data.settings -%}
+{%- assign contact = site.data.contact -%}
+{%- assign L = site.data.labels -%}
+<style>
+  body.is-maint{overflow:hidden}
+  body.is-maint > :not(.maint){display:none !important}
+  body:not(.is-maint) > .maint{display:none}
+  .preview-bar{display:none}
+  body.is-preview > .preview-bar{display:flex;position:fixed;inset:auto 0 0 0;z-index:99;align-items:center;justify-content:center;gap:14px;padding:8px 16px;background:var(--sifdim-gold);color:var(--sifdim-navy);font:600 14px/1.5 var(--font)}
+  .preview-bar button{font:inherit;color:#FBF8F2;background:var(--sifdim-navy);border:0;border-radius:999px;padding:3px 14px;cursor:pointer}
+
+  .maint{position:fixed;inset:0;z-index:90;overflow:auto;display:grid;grid-template-rows:auto 1fr auto;background:var(--sifdim-navy);color:#C3CAD6;font-family:var(--font);isolation:isolate}
+  /* نمط المعيّنات نفسه المستعمل في رأس الموقع */
+  .maint::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.5;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='%23D8A657' fill-opacity='.28'%3E%3Cpath d='M36 33.4l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath d='M0-2.6L2.6 0 0 2.6-2.6 0zM72-2.6l2.6 2.6-2.6 2.6-2.6-2.6zM0 69.4L2.6 72 0 74.6-2.6 72zM72 69.4l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-image:linear-gradient(to left, transparent 35%, #000 90%);mask-image:linear-gradient(to left, transparent 35%, #000 90%)}
+  .maint > div{width:100%;max-width:1160px;margin-inline:auto;padding-inline:max(24px, env(safe-area-inset-left,0px))}
+  .maint-top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:36px}
+  .maint-top img{height:52px;width:auto}
+  .maint-top span{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:500;color:#AEB6C6}
+  .maint-top span::before{content:"";width:8px;height:8px;background:var(--sifdim-gold);transform:rotate(45deg);flex:none}
+  .maint-main{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(24px,4vw,56px);align-items:center;padding-block:32px}
+  .scene{width:100%;height:auto;overflow:visible}
+  .maint h1{font-size:clamp(46px,7vw,92px);line-height:1.14;font-weight:700;color:#FBF8F2;margin:0}
+  .maint p.t{font-size:clamp(17px,1.7vw,20px);line-height:1.85;max-width:40ch;margin:24px 0 0}
+  .maint-reach{display:grid;gap:10px;margin-top:36px}
+  .maint-reach div{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
+  .maint-reach small{font-size:15px;color:#9AA4B6;min-width:4.5em}
+  .maint-reach a{font-size:clamp(20px,2.4vw,28px);font-weight:600;line-height:1.3;color:var(--sifdim-gold);text-decoration:none;direction:ltr;unicode-bidi:isolate;padding-block:6px}
+  .maint-reach a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px}
+  .maint-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;border-top:1px solid var(--navy-2);padding-block:20px 28px;font-size:14px;color:#8E98A9}
+
+  /* ألوان المشهد */
+  .scene .gold{fill:var(--sifdim-gold)}
+  .scene .ln{fill:none;stroke:#8E98A9;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .scene .lg{fill:none;stroke:var(--sifdim-gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .scene .dim{fill:#2B3753}
+  .scene .soft{fill:#18253D;stroke:#3A4866;stroke-width:1.5}
+
+  /* 1) الرافعة تبني أعمدة سيفديم: الحمولة تنزل، والعمود ينهض */
+  .trolley{animation:trolley 9s ease-in-out infinite}
+  .cable{transform-box:fill-box;transform-origin:50% 0;animation:cable 9s ease-in-out infinite}
+  .load{animation:load 9s ease-in-out infinite}
+  .rise1,.rise2,.rise3{transform-box:fill-box;transform-origin:50% 100%;animation:grow 9s cubic-bezier(.3,.7,.2,1) infinite}
+  .rise2{animation-delay:-6s}.rise3{animation-delay:-3s}
+  @keyframes trolley{0%,100%{transform:translateX(0)}33%{transform:translateX(-64px)}66%{transform:translateX(-128px)}}
+  @keyframes cable{0%,24%,33%,57%,66%,90%,100%{transform:scaleY(1)}12%,45%,78%{transform:scaleY(2.6)}}
+  @keyframes load{0%,24%,33%,57%,66%,90%,100%{transform:translateY(0)}12%,45%,78%{transform:translateY(64px)}}
+  @keyframes grow{0%{transform:scaleY(0);fill:#2B3753}30%{transform:scaleY(1);fill:#2B3753}42%,90%{transform:scaleY(1);fill:var(--sifdim-gold);opacity:1}100%{transform:scaleY(1);fill:var(--sifdim-gold);opacity:0}}
+
+  /* 2) الدرون: تحلّق وتمسح الموقع */
+  .drone{animation:fly 14s ease-in-out infinite}
+  .rotor{transform-box:fill-box;transform-origin:50% 50%;animation:spin .28s linear infinite}
+  .beam{transform-box:fill-box;transform-origin:50% 0;animation:beam 3.2s ease-in-out infinite}
+  @keyframes fly{0%,100%{transform:translate(0,0)}25%{transform:translate(-170px,14px)}50%{transform:translate(-420px,-6px)}75%{transform:translate(-200px,-16px)}}
+  @keyframes spin{to{transform:scaleX(-1)}}
+  @keyframes beam{0%,100%{opacity:.05;transform:scaleX(.6)}50%{opacity:.26;transform:scaleX(1.15)}}
+
+  /* 3) الواقع الافتراضي: نظّارة تُنمذج منشأة مجسّمة */
+  .holo{transform-box:fill-box;transform-origin:50% 50%;animation:float 6s ease-in-out infinite}
+  .holo path{stroke-dasharray:6 7;animation:dash 2.4s linear infinite}
+  .scan{animation:scan 3.6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
+  @keyframes dash{to{stroke-dashoffset:-26}}
+  @keyframes scan{0%,100%{transform:translateY(0);opacity:.2}50%{transform:translateY(74px);opacity:.9}}
+
+  /* 4) إنترنت الأشياء: عُقد تتبادل الإشارات */
+  .net path{stroke-dasharray:3 9;animation:dash 1.8s linear infinite}
+  .node{transform-box:fill-box;transform-origin:50% 50%;animation:pulse 2.6s ease-in-out infinite}
+  .node:nth-of-type(2){animation-delay:.5s}.node:nth-of-type(3){animation-delay:1s}.node:nth-of-type(4){animation-delay:1.5s}
+  .wave{transform-box:fill-box;transform-origin:50% 100%;animation:wave 2.4s ease-out infinite}
+  .wave.w2{animation-delay:.8s}.wave.w3{animation-delay:1.6s}
+  @keyframes pulse{0%,100%{transform:rotate(45deg) scale(.8);opacity:.6}50%{transform:rotate(45deg) scale(1.2);opacity:1}}
+  @keyframes wave{0%{opacity:0;transform:scale(.5)}30%{opacity:.9}100%{opacity:0;transform:scale(1.5)}}
+  .tw{transform-box:fill-box;transform-origin:50% 50%;animation:pulse 4s ease-in-out infinite}
+
+  @media (max-width:860px){.maint-main{grid-template-columns:1fr;gap:20px;align-content:start}.scene{order:-1;max-width:520px}.maint-top img{height:44px}.maint-top{padding-top:24px}}
+  @media (prefers-reduced-motion:reduce){.scene *{animation:none !important}}
+</style>
+
+<div class="maint" role="main">
+  <div class="maint-top">
+    <img src="{{ s.logo | relative_url }}" alt="{{ L.brand_name | default: 'سيفديم' }}">
+    <span>{{ s.maintenance_badge | default: "نعمل على التطوير" }}</span>
+  </div>
+
+  <div class="maint-main">
+    <div>
+      <h1>{{ s.maintenance_title | default: "تحت الإنشاء" }}</h1>
+      <p class="t">{{ s.maintenance_text }}</p>
+      <div class="maint-reach">
+        {%- if contact.whatsapp_intl != blank %}<div><small>{{ L.whatsapp_label | default: 'واتساب' }}</small><a href="https://wa.me/{{ contact.whatsapp_intl }}" target="_blank" rel="noopener">{{ contact.whatsapp }}</a></div>{% endif %}
+        {%- if contact.email != blank %}<div><small>{{ L.email_label | default: 'البريد' }}</small><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></div>{% endif %}
+      </div>
+    </div>
+    <svg class="scene" viewBox="0 -64 920 424" role="img" aria-label="مشهد متحرك: رافعة تبني أعمدة سيفديم، وطائرة درون تمسح الموقع، ونظارة واقع افتراضي تنمذج منشأة، وحساسات إنترنت الأشياء تتبادل الإشارات">
+      <!-- نجوم -->
+      <rect class="gold tw" x="118" y="38" width="8" height="8"/>
+      <rect class="gold tw" x="806" y="64" width="6" height="6" style="animation-delay:1.3s"/>
+      <rect class="gold tw" x="300" y="-30" width="5" height="5" style="animation-delay:2.1s"/>
+
+      <!-- إنترنت الأشياء: شبكة حساسات يمين المشهد -->
+      <g class="net lg" opacity=".75">
+        <path d="M742 300 L790 232 L852 262 L812 318 Z"/>
+        <path d="M790 232 L812 318 M742 300 L852 262"/>
+      </g>
+      <rect class="gold node" x="736" y="294" width="12" height="12"/>
+      <rect class="gold node" x="784" y="226" width="12" height="12"/>
+      <rect class="gold node" x="846" y="256" width="12" height="12"/>
+      <rect class="gold node" x="806" y="312" width="12" height="12"/>
+      <g class="lg">
+        <path class="wave" d="M774 214 a16 16 0 0 1 32 0"/>
+        <path class="wave w2" d="M764 206 a26 26 0 0 1 52 0"/>
+        <path class="wave w3" d="M754 198 a36 36 0 0 1 72 0"/>
+      </g>
+
+      <!-- الواقع الافتراضي: نظارة ومجسّم يسار المشهد -->
+      <g transform="translate(36 176) scale(1.2)">
+        <g transform="translate(34 -118)"><g class="holo lg">
+          <path d="M0 30 L44 8 L88 30 L44 52 Z"/>
+          <path d="M0 30 V86 L44 108 V52 M88 30 V86 L44 108"/>
+          <path d="M22 41 V97 M66 41 V97" opacity=".55"/>
+        </g></g>
+        <rect class="scan gold" x="30" y="-112" width="96" height="2" rx="1"/>
+        <path class="soft" d="M18 18 h120 a16 16 0 0 1 16 16 v34 a16 16 0 0 1 -16 16 h-30 l-14 -16 h-32 l-14 16 h-30 a16 16 0 0 1 -16 -16 v-34 a16 16 0 0 1 16 -16z"/>
+        <rect class="gold" x="26" y="34" width="38" height="20" rx="8" opacity=".9"/>
+        <rect class="gold" x="92" y="34" width="38" height="20" rx="8" opacity=".9"/>
+        <path class="ln" d="M2 40 h-14 M154 40 h14"/>
+      </g>
+
+      <!-- الرافعة -->
+      <g>
+        <path class="ln" d="M610 328 V70 M634 328 V70 M610 70 H634"/>
+        <path class="ln" d="M610 300 L634 270 L610 240 L634 210 L610 180 L634 150 L610 120 L634 90" opacity=".6"/>
+        <path class="ln" d="M370 70 H690 M622 34 V70 M622 34 L400 70 M622 34 L690 70"/>
+        <rect class="dim" x="656" y="72" width="30" height="24" rx="3"/>
+        <g class="trolley">
+          <rect class="gold" x="528" y="66" width="22" height="9" rx="3"/>
+          <rect class="cable gold" x="538" y="75" width="2" height="40"/>
+          <g class="load">
+            <path class="lg" d="M539 115 v8"/>
+            <rect class="gold" x="528" y="123" width="22" height="22" rx="6"/>
+          </g>
+        </g>
+      </g>
+
+      <!-- أعمدة سيفديم تُبنى فوق القاعدة -->
+      <rect class="rise1" x="518" y="244" width="42" height="66" rx="21"/>
+      <rect class="rise2" x="454" y="196" width="42" height="114" rx="21"/>
+      <rect class="rise3" x="390" y="244" width="42" height="66" rx="21"/>
+      <rect class="gold" x="360" y="320" width="300" height="22" rx="11"/>
+
+      <!-- الدرون -->
+      <g class="drone">
+        <g transform="translate(780 -24) scale(1.35)">
+          <path class="beam gold" d="M0 16 L-46 150 H46 Z"/>
+          <rect class="soft" x="-20" y="2" width="40" height="14" rx="7"/>
+          <rect class="gold" x="-5" y="12" width="10" height="7" rx="3"/>
+          <path class="ln" d="M-20 6 L-46 -2 M20 6 L46 -2"/>
+          <rect class="gold rotor" x="-64" y="-5" width="36" height="4" rx="2"/>
+          <rect class="gold rotor" x="28" y="-5" width="36" height="4" rx="2"/>
+        </g>
+      </g>
+
+      <!-- خط الأرض -->
+      <path class="ln" d="M20 342 H900" opacity=".35"/>
+    </svg>
+  </div>
+
+  <div class="maint-foot"><span>{{ s.footer_line }}</span><span>{{ s.footer_motto }}</span></div>
+</div>
+
+<div class="preview-bar"><span>{{ L.preview_bar | default: 'وضع المعاينة: الموقع مخفي عن الزوار، وأنت ترى النسخة الحقيقية.' }}</span><button type="button" id="preview-exit">{{ L.preview_exit | default: 'خروج من المعاينة' }}</button></div>
+
+<script>
+// المعاينة: من يفتح الرابط برمز المعاينة يرى الموقع الحقيقي على جهازه فقط
+(function () {
+  var KEY = {{ s.preview_key | default: "" | jsonify }};
+  var store = 'sifdim-preview';
+  if (!KEY) return;
+  try {
+    var q = new URLSearchParams(location.search).get('preview');
+    if (q !== null) {
+      if (q === KEY) localStorage.setItem(store, KEY); else localStorage.removeItem(store);
+      history.replaceState(null, '', location.pathname + location.hash);
+    }
+    if (localStorage.getItem(store) === KEY) {
+      document.body.classList.remove('is-maint');
+      document.body.classList.add('is-preview');
+      document.getElementById('preview-exit').addEventListener('click', function () {
+        localStorage.removeItem(store); location.reload();
+      });
+    }
+  } catch (e) {}
+})();
+</script>

@@ -1,0 +1,54 @@
+{%- assign s = site.data.settings -%}
+{%- assign L = site.data.labels -%}
+{%- assign lic = site.data.licenses -%}
+{%- assign fdocs = site.docs | sort: "order" -%}
+<footer class="site-footer">
+  <img class="qatt" src="{{ '/assets/img/qatt-band.png' | relative_url }}" alt="" width="2400" height="594">
+  {%- if s.show_licenses != false and lic.items.size > 0 %}
+  <div class="wrap licenses" id="licenses">
+    <div class="lic-head">
+      <p class="lic-title">{{ lic.label }}</p>
+      {%- if lic.note != blank %}<p class="lic-note">{{ lic.note }}</p>{% endif %}
+    </div>
+    <ul class="lic-list">
+      {%- for l in lic.items %}
+      {%- assign href = l.file | default: l.url -%}
+      <li>
+        {%- if href != blank %}
+        <a class="lic" href="{% if l.file != blank %}{{ l.file | relative_url }}{% else %}{{ l.url }}{% endif %}" target="_blank" rel="noopener" title="{{ L.lic_open | default: 'عرض الشهادة' }}: {{ l.name }}">
+        {%- else %}
+        <div class="lic">
+        {%- endif %}
+          {%- if l.logo != blank %}
+          <span class="lic-logo"><img src="{{ l.logo | relative_url }}" alt="{{ l.issuer }}" loading="lazy"></span>
+          {%- endif %}
+          <span class="lic-body">
+            <span class="lic-name">{{ l.name }}</span>
+            <span class="lic-issuer">{{ l.issuer }}</span>
+            <span class="lic-num"><small>{{ l.number_label }}</small><b>{{ l.number }}</b></span>
+            {%- if l.expiry != blank %}<span class="lic-exp">{{ L.lic_valid_until | default: 'سارية حتى' }} {{ l.expiry }}</span>{% endif %}
+          </span>
+          {%- if href != blank %}<span class="lic-open">{{ L.lic_open | default: 'عرض الشهادة' }}</span>{% endif %}
+        {%- if href != blank %}
+        </a>
+        {%- else %}
+        </div>
+        {%- endif %}
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+  {%- endif %}
+  <div class="wrap foot-links">
+    <a href="{{ '/docs/' | relative_url }}">{{ s.docs_title }}</a>
+    {%- for d in fdocs %}
+    {%- if d.published != false and d.in_footer %}
+    <a href="{{ d.url | relative_url }}">{{ d.title }}</a>
+    {%- endif %}
+    {%- endfor %}
+  </div>
+  <div class="wrap foot-line">
+    <span>{{ s.footer_line }}</span>
+    <span>{{ s.footer_motto }}</span>
+  </div>
+</footer>

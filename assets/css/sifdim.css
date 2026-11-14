@@ -128,7 +128,7 @@ h2{font-size:clamp(28px,3.4vw,42px);line-height:1.3;font-weight:700;color:var(--
 /* الرؤية والرسالة والقيم */
 .vision{font-size:clamp(24px,3vw,36px);line-height:1.6;font-weight:600;color:var(--ink);max-width:28em}
 .mission{font-size:clamp(18px,1.8vw,21px);line-height:1.8;max-width:52ch;margin-top:28px}
-.values{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px;margin-top:clamp(48px,6vw,72px)}
+.values{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:28px;margin-top:clamp(48px,6vw,72px)}
 .values dt{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;color:var(--ink)}
 .values dt::before{content:"";width:9px;height:9px;background:var(--sifdim-gold);transform:rotate(45deg);flex:none}
 .values dd{font-size:15.5px;line-height:1.7;margin-top:6px}
@@ -140,7 +140,7 @@ h2{font-size:clamp(28px,3.4vw,42px);line-height:1.3;font-weight:700;color:var(--
 .engine h3{font-size:clamp(21px,2.2vw,26px);line-height:1.5;font-weight:700;color:var(--ink);margin-top:6px}
 .engine .first{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:15.5px}
 .engine .first::before{content:"";width:8px;height:8px;background:var(--sifdim-gold);transform:rotate(45deg);flex:none}
-.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin-top:clamp(48px,6vw,72px);padding-top:32px;border-top:1px solid var(--line)}
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:28px;margin-top:clamp(48px,6vw,72px);padding-top:32px;border-top:1px solid var(--line)}
 .pillars h3{font-size:17px;font-weight:700;color:var(--ink)}
 .pillars p{font-size:15.5px;line-height:1.7;margin-top:6px}
 
@@ -237,4 +237,67 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 2
 
 @media (prefers-reduced-motion:reduce){
   .ticker .tk,.tk .v,.sigil *,.sigil::before,.star{animation:none !important}
+}
+
+/* ---------- التنقل في رأس الصفحة ---------- */
+.hero-top{justify-content:flex-start;gap:clamp(20px,4vw,48px)}
+.nav{display:flex;flex-wrap:wrap;align-items:center;gap:6px clamp(14px,2.2vw,28px);font-size:15px;font-weight:500}
+.nav a{color:#C3CAD6;text-decoration:none;padding-block:6px;border-bottom:2px solid transparent}
+.nav a:hover{color:#FBF8F2;border-bottom-color:var(--sifdim-gold)}
+.nav .cta{color:var(--sifdim-gold)}
+
+/* ---------- الحوكمة: خمس مجموعات عمليات على قاعدة واحدة ---------- */
+.phases{list-style:none;padding:0;margin:40px 0 0;display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));border-top:12px solid var(--sifdim-gold);border-radius:6px 6px 0 0}
+.phases li{padding:20px 18px 0;border-inline-start:1px solid color-mix(in srgb,var(--ink) 14%,transparent)}
+.phases li:first-child{border-inline-start:0;padding-inline-start:0}
+.phases b{display:block;font-size:14px;font-weight:600;color:var(--gold-ink);font-variant-numeric:tabular-nums}
+.phases strong{display:block;font-size:20px;line-height:1.5;color:var(--ink)}
+.phases p{font-size:15.5px;line-height:1.7;margin-top:6px}
+.doclist{list-style:none;padding:0;margin:18px 0 28px;border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent)}
+.doclist a{display:grid;grid-template-columns:130px minmax(0,1fr) auto;align-items:baseline;gap:8px 20px;padding-block:16px;border-bottom:1px solid color-mix(in srgb,var(--ink) 14%,transparent);text-decoration:none}
+.doclist .dk{font-size:14px;font-weight:600;color:var(--gold-ink)}
+.doclist b{font-size:clamp(18px,2vw,22px);line-height:1.5;color:var(--ink)}
+.doclist .dc{font-size:13.5px;color:var(--muted);direction:ltr;font-variant-numeric:tabular-nums}
+.doclist a:hover b{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px}
+.btn.dark{display:inline-block;background:var(--ink);color:var(--bg);padding:10px 22px}
+
+/* ---------- التذييل: التراخيص والتوثيق ---------- */
+footer .wrap.licenses{display:block;padding-block:36px 8px}
+.lic-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
+.lic-title{font-size:15px;font-weight:600;color:var(--sifdim-gold)}
+.lic-note{font-size:13.5px;color:#8E98A9}
+.lic-list{list-style:none;padding:0;margin:18px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 40px;border-top:1px solid var(--navy-2)}
+.lic{display:grid;grid-template-columns:104px minmax(0,1fr);align-items:center;gap:6px 16px;height:100%;padding:20px 0;border-bottom:1px solid var(--navy-2);text-decoration:none;color:inherit}
+a.lic:hover .lic-name{color:var(--sifdim-gold)}
+.lic-logo{grid-row:span 2;display:flex;align-items:center;justify-content:center;height:64px;padding:8px;background:#fff;border-radius:4px}
+.lic-logo img{max-height:100%;width:auto;object-fit:contain}
+.lic-body{display:flex;flex-direction:column;min-width:0}
+.lic-name{font-size:15.5px;font-weight:600;line-height:1.5;color:#F1EDE4}
+.lic-issuer{font-size:13px;color:#8E98A9}
+.lic-num{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 8px;margin-top:4px}
+.lic-num small{font-size:12.5px;color:#8E98A9}
+.lic-num b{font-size:16px;font-weight:600;color:var(--sifdim-gold);direction:ltr;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.lic-exp{font-size:12.5px;color:#8E98A9}
+.lic-open{grid-column:2;font-size:13px;font-weight:600;color:#C3CAD6;text-decoration:underline;text-underline-offset:4px}
+a.lic:hover .lic-open{color:var(--sifdim-gold)}
+footer .wrap.foot-links{justify-content:flex-start;gap:6px 24px;padding-block:26px 0;font-size:14.5px}
+.foot-links a{color:#C3CAD6;text-decoration:none}
+.foot-links a:hover{color:var(--sifdim-gold);text-decoration:underline;text-underline-offset:4px}
+footer .wrap.foot-line{padding-block:16px 36px}
+
+@media (max-width:920px){
+  .phases{grid-template-columns:1fr;border-top:0;border-inline-start:12px solid var(--sifdim-gold);border-radius:0 6px 6px 0}
+  .phases li,.phases li:first-child{padding:14px 18px;border-inline-start:0;border-bottom:1px solid color-mix(in srgb,var(--ink) 14%,transparent)}
+  .phases li:last-child{border-bottom:0}
+  .doclist a{grid-template-columns:1fr;gap:2px}
+}
+@media (max-width:720px){
+  .nav a:not(.keep){display:none}
+}
+
+/* مساحات لمس مريحة على الشاشات الصغيرة */
+@media (max-width:920px){
+  .foot-links a{padding-block:9px}
+  footer .wrap.foot-links{padding-block:16px 0;gap:0 24px}
+  .nav a{padding-block:10px}
 }

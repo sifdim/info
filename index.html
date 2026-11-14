@@ -4,6 +4,7 @@
 layout: null
 ---
 {%- assign s = site.data.settings -%}
+{%- assign L = site.data.labels -%}
 {%- assign hero = site.data.hero -%}
 {%- assign about = site.data.about -%}
 {%- assign ps = site.data.path -%}
@@ -14,6 +15,12 @@ layout: null
 {%- assign founder = site.data.founder -%}
 {%- assign contact = site.data.contact -%}
 {%- assign partners = site.data.partners -%}
+{%- assign gov = site.data.governance -%}
+{%- assign nav = site.data.nav -%}
+{%- assign docs = site.docs | sort: "order" -%}
+{%- comment -%} ترتيب الأقسام يأتي من الإعدادات العامة. إذا كانت القائمة فارغة يُستعمل الترتيب الافتراضي. {%- endcomment -%}
+{%- assign default_sections = "about,path,vision,model,kpis,roadmap,partners,governance,founder,contact" | split: "," -%}
+{%- assign sections = s.sections | default: default_sections -%}
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -21,34 +28,47 @@ layout: null
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{{ s.seo_title }}</title>
   <meta name="description" content="{{ s.seo_description | escape }}">
-  <meta name="theme-color" content="#0B1426">
+  <meta name="theme-color" content="{{ site.data.theme.navy | default: '#0B1426' }}">
+  {%- if s.maintenance %}
+  <meta name="robots" content="noindex">
+  {%- endif %}
 
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_SA">
-  <meta property="og:site_name" content="سيفديم">
+  <meta property="og:site_name" content="{{ L.brand_name | default: 'سيفديم' | escape }}">
   <meta property="og:title" content="{{ s.seo_title | escape }}">
   <meta property="og:description" content="{{ s.seo_description | escape }}">
-  <meta property="og:image" content="{{ '/assets/img/qatt-band.png' | absolute_url }}">
+  <meta property="og:image" content="{{ s.og_image | default: '/assets/img/qatt-band.png' | absolute_url }}">
 
-  <link rel="icon" type="image/png" href="{{ '/assets/img/favicon.png' | relative_url }}">
+  <link rel="icon" type="image/png" href="{{ s.favicon | default: '/assets/img/favicon.png' | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
   <link rel="preload" href="{{ '/assets/fonts/IBMPlexSansArabic-Bold.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{ '/assets/css/brand.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/sifdim.css' | relative_url }}">
+  {% include theme.html %}
   {%- if s.umami_website_id != blank %}
   <script defer src="https://cloud.umami.is/script.js" data-website-id="{{ s.umami_website_id }}"></script>
   {%- endif %}
 </head>
-<body>
+<body{% if s.maintenance %} class="is-maint"{% endif %}>
+{%- if s.maintenance %}{% include maintenance.html %}{% endif %}
 
 <header class="hero">
   {%- if s.beta %}
-  <div class="beta" role="note" aria-label="إطلاق تجريبي"><span><i></i>إطلاق تجريبي<i></i><small>Beta</small></span></div>
+  <div class="beta" role="note" aria-label="{{ L.beta_ar | default: 'إطلاق تجريبي' }}"><span><i></i>{{ L.beta_ar | default: 'إطلاق تجريبي' }}<i></i><small>{{ L.beta_en | default: 'Beta' }}</small></span></div>
   {%- endif %}
 
   <div class="wrap">
     <div class="hero-top">
-      <img class="logo" src="{{ s.logo | relative_url }}" alt="سيفديم" height="52">
+      <img class="logo" src="{{ s.logo | relative_url }}" alt="{{ L.brand_name | default: 'سيفديم' }}" height="52">
+      {%- if s.show_nav != false and nav.items.size > 0 %}
+      <nav class="nav" aria-label="{{ L.nav_aria | default: 'أقسام الموقع' }}">
+        {%- for n in nav.items %}
+        {%- assign first = n.url | slice: 0 -%}
+        <a class="{% if n.highlight %}cta {% endif %}{% if n.mobile %}keep{% endif %}" href="{% if first == '/' %}{{ n.url | relative_url }}{% else %}{{ n.url }}{% endif %}">{{ n.label }}</a>
+        {%- endfor %}
+      </nav>
+      {%- endif %}
     </div>
 
     <div class="hero-grid">
@@ -82,7 +102,10 @@ layout: null
 </header>
 
 <main>
+{%- for sec in sections %}
+{%- case sec %}
 
+{%- when "about" %}
 <section class="band" id="about">
   <div class="wrap sec">
     <p class="side">{{ about.label }}</p>
@@ -101,7 +124,7 @@ layout: null
   </div>
 </section>
 
-{%- if s.show_path != false %}
+{%- when "path" %}
 <section class="band plain" id="path">
   <div class="wrap sec">
     <p class="side">{{ ps.label }}</p>
@@ -119,16 +142,15 @@ layout: null
     </div>
   </div>
 </section>
-{%- endif %}
 
-{%- if s.show_vision != false %}
+{%- when "vision" %}
 <section class="band warm" id="vision">
   <div class="wrap sec">
     <p class="side">{{ vision.label }}</p>
     <div>
       <p class="vision">{{ vision.vision }}</p>
-      <p class="mission"><strong>رسالتنا:</strong> {{ vision.mission }}</p>
-      <dl class="values" aria-label="قيمنا">
+      <p class="mission"><strong>{{ L.mission_prefix | default: 'رسالتنا:' }}</strong> {{ vision.mission }}</p>
+      <dl class="values" style="--n:{{ vision.values.size }}" aria-label="{{ L.values_aria | default: 'قيمنا' }}">
         {%- for v in vision.values %}
         <div><dt>{{ v.name }}</dt><dd>{{ v.text }}</dd></div>
         {%- endfor %}
@@ -136,9 +158,8 @@ layout: null
     </div>
   </div>
 </section>
-{%- endif %}
 
-{%- if s.show_model != false %}
+{%- when "model" %}
 <section class="band" id="model">
   <div class="wrap sec">
     <p class="side">{{ model.label }}</p>
@@ -156,7 +177,7 @@ layout: null
         </div>
         {%- endfor %}
       </div>
-      <div class="pillars">
+      <div class="pillars" style="--n:{{ model.pillars.size }}">
         {%- for p in model.pillars %}
         <div><h3>{{ p.title }}</h3><p>{{ p.text }}</p></div>
         {%- endfor %}
@@ -164,9 +185,8 @@ layout: null
     </div>
   </div>
 </section>
-{%- endif %}
 
-{%- if s.show_kpis != false %}
+{%- when "kpis" %}
 <section class="band dark" id="kpis">
   <div class="wrap sec">
     <p class="side">{{ kpis.label }}</p>
@@ -180,9 +200,8 @@ layout: null
     </div>
   </div>
 </section>
-{%- endif %}
 
-{%- if s.show_roadmap != false %}
+{%- when "roadmap" %}
 <section class="band" id="roadmap">
   <div class="wrap sec">
     <p class="side">{{ roadmap.label }}</p>
@@ -204,9 +223,9 @@ layout: null
     </div>
   </div>
 </section>
-{%- endif %}
 
-{%- if s.show_partners != false and partners.items.size > 0 %}
+{%- when "partners" %}
+{%- if partners.items.size > 0 %}
 <section class="band plain" id="partners">
   <div class="wrap sec">
     <p class="side">{{ partners.label }}</p>
@@ -231,7 +250,38 @@ layout: null
 </section>
 {%- endif %}
 
-{%- if s.show_founder != false %}
+{%- when "governance" %}
+<section class="band warm" id="governance">
+  <div class="wrap sec">
+    <p class="side">{{ gov.label }}</p>
+    <div>
+      <h2>{{ gov.title }}</h2>
+      {%- if gov.lead != blank %}
+      <p class="note">{{ gov.lead }}</p>
+      {%- endif %}
+      {%- if gov.steps.size > 0 %}
+      <ol class="phases" style="--n:{{ gov.steps.size }}">
+        {%- for st in gov.steps %}
+        <li><b>{{ forloop.index }}</b><strong>{{ st.name }}</strong><p>{{ st.text }}</p></li>
+        {%- endfor %}
+      </ol>
+      {%- endif %}
+      {%- if docs.size > 0 %}
+      <p class="facts-cap">{{ gov.docs_title }}</p>
+      <ul class="doclist">
+        {%- for d in docs %}
+        {%- if d.published != false %}
+        <li><a href="{{ d.url | relative_url }}"><span class="dk">{{ d.kind }}</span><b>{{ d.title }}</b><span class="dc">{{ d.code }}</span></a></li>
+        {%- endif %}
+        {%- endfor %}
+      </ul>
+      <a class="btn dark" href="{{ '/docs/' | relative_url }}">{{ gov.docs_button }}</a>
+      {%- endif %}
+    </div>
+  </div>
+</section>
+
+{%- when "founder" %}
 <section class="band" id="founder">
   <div class="wrap sec">
     <p class="side">{{ founder.label }}</p>
@@ -251,8 +301,8 @@ layout: null
     </div>
   </div>
 </section>
-{%- endif %}
 
+{%- when "contact" %}
 <section class="band dark contact" id="contact">
   <div class="wrap sec">
     <p class="side">{{ contact.label }}</p>
@@ -260,22 +310,22 @@ layout: null
       <h2>{{ contact.title }}</h2>
       <p class="lead">{{ contact.lead }}</p>
       <div class="reach">
-        <div class="row"><span class="lbl">البريد</span><a class="big" id="mail" href="mailto:{{ contact.email }}">{{ contact.email }}</a><button type="button" class="btn ghost" id="copy">نسخ البريد</button></div>
-        <div class="row"><span class="lbl">واتساب</span><a class="big" href="https://wa.me/{{ contact.whatsapp_intl }}" target="_blank" rel="noopener">{{ contact.whatsapp }}</a><a class="btn" href="https://wa.me/{{ contact.whatsapp_intl }}" target="_blank" rel="noopener">{{ contact.whatsapp_button }}</a></div>
+        {%- if contact.email != blank %}
+        <div class="row"><span class="lbl">{{ L.email_label | default: 'البريد' }}</span><a class="big" id="mail" href="mailto:{{ contact.email }}">{{ contact.email }}</a><button type="button" class="btn ghost" id="copy" data-done="{{ L.copied | default: 'تم النسخ' }}">{{ L.copy_email | default: 'نسخ البريد' }}</button></div>
+        {%- endif %}
+        {%- if contact.whatsapp_intl != blank %}
+        <div class="row"><span class="lbl">{{ L.whatsapp_label | default: 'واتساب' }}</span><a class="big" href="https://wa.me/{{ contact.whatsapp_intl }}" target="_blank" rel="noopener">{{ contact.whatsapp }}</a><a class="btn" href="https://wa.me/{{ contact.whatsapp_intl }}" target="_blank" rel="noopener">{{ contact.whatsapp_button }}</a></div>
+        {%- endif %}
       </div>
     </div>
   </div>
 </section>
 
+{%- endcase %}
+{%- endfor %}
 </main>
 
-<footer>
-  <img class="qatt" src="{{ '/assets/img/qatt-band.png' | relative_url }}" alt="" width="2400" height="594">
-  <div class="wrap">
-    <span>{{ s.footer_line }}</span>
-    <span>{{ s.footer_motto }}</span>
-  </div>
-</footer>
+{% include footer.html %}
 
 <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
 </body>

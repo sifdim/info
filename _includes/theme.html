@@ -1,0 +1,17 @@
+{%- comment -%}
+  ألوان الهوية وسرعة الشريط المتحرك من لوحة التحكم (ملف _data/theme.yml).
+  الحقل الفارغ يُبقي القيمة الأصلية المكتوبة في brand.css.
+{%- endcomment -%}
+{%- assign t = site.data.theme -%}
+<style>
+  :root{
+    {%- if t.navy != blank %}--sifdim-navy:{{ t.navy }};{% endif %}
+    {%- if t.gold != blank %}--sifdim-gold:{{ t.gold }};{% endif %}
+    {%- if t.ivory != blank %}--sifdim-ivory:{{ t.ivory }};{% endif %}
+    {%- if t.cloud != blank %}--sifdim-cloud:{{ t.cloud }};{% endif %}
+    {%- if t.nebula != blank %}--sifdim-nebula:{{ t.nebula }};{% endif %}
+    {%- if t.gold_text != blank %}--gold-ink:{{ t.gold_text }};{% endif %}
+  }
+  {%- if t.ticker_ar_seconds != blank %}.ticker.is-ready .tk.ar{animation-duration:{{ t.ticker_ar_seconds }}s}{% endif %}
+  {%- if t.ticker_en_seconds != blank %}.ticker.is-ready .tk.en{animation-duration:{{ t.ticker_en_seconds }}s}{% endif %}
+</style>

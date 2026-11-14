@@ -35,7 +35,7 @@
   btn.addEventListener('click', function () {
     try {
       navigator.clipboard.writeText(mail.textContent.trim()).then(function () {
-        btn.textContent = 'تم النسخ';
+        btn.textContent = btn.getAttribute('data-done') || 'تم النسخ';
         setTimeout(function () { btn.textContent = label; }, 1800);
       }).catch(selectText);
     } catch (e) { selectText(); }

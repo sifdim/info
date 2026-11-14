@@ -45,6 +45,17 @@ layout: null
     </div>
   </header>
 
+  {%- if s.maintenance %}
+  <h2>حالة الموقع</h2>
+  <div class="empty">
+    <b>الموقع الآن في وضع «تحت الإنشاء» ومخفي عن الزوار.</b><br>
+    تعديلاتك تُحفظ وتُبنى لكنها لا تظهر إلا لك. أطفئ الزر من «الإعدادات العامة» حين تنتهي.
+    {%- if s.preview_key != blank %}
+    <br><a class="btn" style="margin-top:14px" href="{{ '/' | relative_url }}?preview={{ s.preview_key | url_encode }}">معاينة الموقع الحقيقي</a>
+    {%- endif %}
+  </div>
+  {%- endif %}
+
   <h2>إحصاءات الزوار</h2>
   {%- if s.umami_share_url != blank %}
   <iframe class="stats" src="{{ s.umami_share_url }}" title="إحصاءات موقع سيفديم" loading="lazy"></iframe>

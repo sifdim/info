@@ -1,0 +1,46 @@
+brand_name: سيفديم
+beta_ar: إطلاق تجريبي
+beta_en: Beta
+nav_aria: أقسام الموقع
+mission_prefix: 'رسالتنا:'
+values_aria: قيمنا
+email_label: البريد
+whatsapp_label: واتساب
+copy_email: نسخ البريد
+copied: تم النسخ
+cr_label: السجل التجاري
+lic_open: عرض الشهادة
+lic_valid_until: سارية حتى
+home: الرئيسية
+toc: الفهرس
+search_placeholder: ابحث في الوثيقة
+download_pdf: تنزيل PDF
+pdf_hint: في نافذة الطباعة اختر «حفظ بتنسيق PDF»
+print: طباعة
+font_smaller: تصغير الخط
+font_larger: تكبير الخط
+copy_link: نسخ رابط هذه المادة
+meta_code: رقم الوثيقة
+meta_version: الإصدار
+meta_status: الحالة
+meta_issued: تاريخ الاعتماد
+meta_review: المراجعة القادمة
+meta_owner: مالك الوثيقة
+draft_badge: مسودة بانتظار الاعتماد
+draft_watermark: مسودة
+raci_title: مصفوفة المسؤوليات (RACI)
+raci_legend: م = مسؤول عن التنفيذ، ح = محاسَب عن النتيجة، ش = يُستشار، ع = يُعلَم.
+raci_activity: النشاط
+raci_r: م
+raci_a: ح
+raci_c: ش
+raci_i: ع
+rev_title: سجل التعديلات
+rev_version: الإصدار
+rev_date: التاريخ
+rev_change: التعديل
+approved_by: اعتمدها
+awaiting_approval: بانتظار اعتماد
+other_docs: وثائق أخرى
+preview_bar: 'وضع المعاينة: الموقع مخفي عن الزوار، وأنت ترى النسخة الحقيقية.'
+preview_exit: خروج من المعاينة

@@ -1,0 +1,76 @@
+---
+# مركز الوثائق: يسرد كل ملفات مجلد _docs المنشورة
+layout: null
+permalink: /docs/
+---
+{%- assign s = site.data.settings -%}
+{%- assign L = site.data.labels -%}
+{%- assign docs = site.docs | sort: "order" -%}
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ s.docs_title }} | {{ s.legal_name }}</title>
+  <meta name="description" content="{{ s.docs_lead | escape }}">
+  <meta name="theme-color" content="{{ site.data.theme.navy | default: '#0B1426' }}">
+  {%- if s.maintenance %}
+  <meta name="robots" content="noindex">
+  {%- endif %}
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="{{ L.brand_name | default: 'سيفديم' | escape }}">
+  <meta property="og:title" content="{{ s.docs_title | escape }}">
+  <meta property="og:description" content="{{ s.docs_lead | escape }}">
+  <meta property="og:image" content="{{ s.og_image | default: '/assets/img/qatt-band.png' | absolute_url }}">
+  <link rel="icon" type="image/png" href="{{ s.favicon | default: '/assets/img/favicon.png' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/brand.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/sifdim.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/docs.css' | relative_url }}">
+  {% include theme.html %}
+  {%- if s.umami_website_id != blank %}
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="{{ s.umami_website_id }}"></script>
+  {%- endif %}
+</head>
+<body class="doc-page{% if s.maintenance %} is-maint{% endif %}">
+{%- if s.maintenance %}{% include maintenance.html %}{% endif %}
+
+<header class="doc-bar">
+  <div class="wrap">
+    <a class="doc-brand" href="{{ '/' | relative_url }}" title="{{ L.home | default: 'الرئيسية' }}"><img src="{{ s.logo | relative_url }}" alt="{{ L.brand_name | default: 'سيفديم' }}" height="36"></a>
+    <nav class="crumbs" aria-label="المسار">
+      <a href="{{ '/' | relative_url }}">{{ L.home | default: 'الرئيسية' }}</a>
+      <span aria-hidden="true">‹</span>
+      <b>{{ s.docs_title }}</b>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap library">
+  <h1>{{ s.docs_title }}</h1>
+  <p class="lead">{{ s.docs_lead }}</p>
+
+  <ul class="shelf">
+    {%- for d in docs %}
+    {%- if d.published != false %}
+    <li>
+      <a href="{{ d.url | relative_url }}">
+        <span class="shelf-top"><span class="shelf-kind">{{ d.kind }}</span><span class="ltr shelf-code">{{ d.code }}</span></span>
+        <span class="shelf-main"><b>{{ d.title }}</b><span class="shelf-sum">{{ d.summary }}</span></span>
+        <span class="shelf-meta">
+          <span>{{ L.meta_version | default: 'الإصدار' }} <i class="ltr">{{ d.version }}</i></span>
+          {%- if d.status == "مسودة" %}<span class="chip draft">{{ d.status }}</span>{% else %}<span class="chip ok">{{ d.status }}</span>{% endif %}
+          {%- if d.issued != blank %}<span class="ltr">{{ d.issued | date: "%Y-%m-%d" }}</span>{% endif %}
+        </span>
+      </a>
+    </li>
+    {%- endif %}
+    {%- endfor %}
+  </ul>
+</main>
+
+{% include footer.html %}
+
+</body>
+</html>

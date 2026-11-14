@@ -3,5 +3,20 @@ encoding: utf-8
 lang: ar
 # بدون قالب جاهز من قيت هب: الموقع له تصميمه الخاص
 theme: null
+
+# مركز الوثائق: كل ملف داخل _docs يصير صفحة على الرابط /docs/رمز-الوثيقة/
+collections:
+  docs:
+    output: true
+    permalink: /docs/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: docs
+    values:
+      layout: doc
+
 exclude:
   - README.md
+  - sifdim-website.zip

@@ -1,0 +1,21 @@
+items:
+- label: من نحن
+  url: '#about'
+  highlight: false
+  mobile: false
+- label: نموذج العمل
+  url: '#model'
+  highlight: false
+  mobile: false
+- label: الحوكمة
+  url: '#governance'
+  highlight: false
+  mobile: false
+- label: مركز الوثائق
+  url: /docs/
+  highlight: false
+  mobile: true
+- label: تواصل معنا
+  url: '#contact'
+  highlight: true
+  mobile: true

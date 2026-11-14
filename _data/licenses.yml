@@ -1,0 +1,27 @@
+label: التراخيص والتوثيق
+note: اضغط على أي ترخيص لعرض الشهادة الأصلية.
+items:
+- name: السجل التجاري
+  issuer: وزارة التجارة
+  number_label: الرقم الوطني الموحد
+  number: '7055495134'
+  expiry: ''
+  logo: /assets/img/licenses/moc.png
+  file: /assets/files/certs/commercial-registration.pdf
+  url: ''
+- name: توثيق التجارة الإلكترونية
+  issuer: المركز السعودي للأعمال
+  number_label: رقم التوثيق
+  number: '0000344513'
+  expiry: 31/10/2027
+  logo: /assets/img/licenses/sbc.png
+  file: /assets/files/certs/ecommerce-authentication.pdf
+  url: ''
+- name: السجل الوطني لحماية البيانات الشخصية
+  issuer: منصة حوكمة البيانات الوطنية
+  number_label: رقم التسجيل
+  number: '3260009628'
+  expiry: ''
+  logo: /assets/img/licenses/ndgp.png
+  file: /assets/files/certs/pdpl-registration.pdf
+  url: ''
