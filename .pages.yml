@@ -1,373 +1,893 @@
 # لوحة تحكم موقع سيفديم (Pages CMS)
-# كل قسم في الصفحة له ملف بيانات داخل مجلد _data، وهذه اللوحة تعرضه كنموذج تعبئة.
+# كل قسم هنا يقابل ملفاً في المستودع، واللوحة تعرضه كنموذج تعبئة بالعربي.
 
 media:
-  input: assets/img
-  output: /assets/img
-  extensions:
-  - png
-  - jpg
-  - jpeg
-  - webp
-  - svg
-  - gif
+  - name: images
+    label: الصور والشعارات
+    input: assets/img
+    output: /assets/img
+    extensions:
+      - png
+      - jpg
+      - jpeg
+      - webp
+      - svg
+      - gif
+  - name: files
+    label: الملفات والشهادات (PDF)
+    input: assets/files
+    output: /assets/files
+    extensions:
+      - pdf
 content:
-- name: settings
-  label: الإعدادات العامة
-  type: file
-  path: _data/settings.yml
-  format: yaml
-  fields:
-  - name: beta
-    label: إظهار شارة «إطلاق تجريبي»
-    type: boolean
-    description: أطفئها يوم الإطلاق الرسمي.
-  - name: seo_title
-    label: عنوان الصفحة في المتصفح ومحركات البحث
-    type: string
-  - name: seo_description
-    label: وصف الموقع في نتائج البحث والمشاركة
-    type: text
-  - name: logo
-    label: الشعار في رأس الصفحة (للخلفيات الداكنة)
-    type: image
-  - name: footer_line
-    label: سطر التذييل
-    type: string
-  - name: footer_motto
-    label: الشعار في التذييل
-    type: string
-  - name: show_path
-    label: إظهار قسم مسار الممارس
-    type: boolean
-  - name: show_vision
-    label: إظهار قسم الرؤية والقيم
-    type: boolean
-  - name: show_model
-    label: إظهار قسم نموذج العمل
-    type: boolean
-  - name: show_kpis
-    label: إظهار قسم المؤشرات
-    type: boolean
-  - name: show_roadmap
-    label: إظهار قسم خارطة الطريق
-    type: boolean
-  - name: show_partners
-    label: إظهار قسم الشركاء
-    type: boolean
-  - name: show_founder
-    label: إظهار قسم المؤسس
-    type: boolean
-  - name: umami_website_id
-    label: رقم الموقع في Umami (للإحصاءات)
-    type: string
-    description: من إعدادات الموقع في Umami، الحقل Website ID.
-  - name: umami_share_url
-    label: رابط مشاركة الإحصاءات من Umami
-    type: string
-    description: يظهر داخل صفحة admin.
-  - name: cms_url
-    label: رابط لوحة التحكم
-    type: string
-- name: hero
-  label: رأس الصفحة
-  type: file
-  path: _data/hero.yml
-  format: yaml
-  fields:
-  - name: kicker
-    label: السطر الصغير فوق العنوان
-    type: string
-  - name: title
-    label: العنوان الرئيسي
-    type: text
-  - name: lede
-    label: النص التعريفي
-    type: text
-  - name: verb_1
-    label: الكلمة تحت العمود الأول
-    type: string
-  - name: verb_2
-    label: الكلمة تحت العمود الأوسط
-    type: string
-  - name: verb_3
-    label: الكلمة تحت العمود الأخير
-    type: string
-  - name: ticker_ar
-    label: الشريط المتحرك - الشعار بالعربي
-    type: string
-  - name: ticker_en
-    label: الشريط المتحرك - الشعار بالإنجليزي
-    type: string
-  - name: ticker_en_1
-    label: الكلمة الأولى بالإنجليزي
-    type: string
-  - name: ticker_en_2
-    label: الكلمة الثانية بالإنجليزي
-    type: string
-  - name: ticker_en_3
-    label: الكلمة الثالثة بالإنجليزي
-    type: string
-- name: about
-  label: من نحن والميزة التنافسية
-  type: file
-  path: _data/about.yml
-  format: yaml
-  fields:
-  - name: label
-    label: اسم القسم
-    type: string
-  - name: statement
-    label: النص الرئيسي
-    type: text
-  - name: note
-    label: النص المساند
-    type: text
-  - name: edge_label
-    label: عنوان الميزة الصغير
-    type: string
-  - name: edge_title
-    label: الميزة التنافسية (بخط كبير)
-    type: string
-  - name: edge_text
-    label: شرح الميزة
-    type: text
-- name: path
-  label: مسار الممارس
-  type: file
-  path: _data/path.yml
-  format: yaml
-  fields:
-  - name: label
-    label: اسم القسم
-    type: string
-  - name: title
-    label: العنوان
-    type: string
-  - name: steps
-    label: الخطوات (الأخيرة تظهر ذهبية منفصلة عن القاعدة)
-    type: string
-    list: true
-- name: vision
-  label: الرؤية والرسالة والقيم
-  type: file
-  path: _data/vision.yml
-  format: yaml
-  fields:
-  - name: label
-    label: اسم القسم
-    type: string
+  - name: settings
+    label: الإعدادات العامة
+    type: file
+    path: _data/settings.yml
+    format: yaml
+    fields:
+      - name: maintenance
+        label: وضع «تحت الإنشاء» (يخفي الموقع كله عن الزوار)
+        type: boolean
+        description: شغّله قبل أن تبدأ تعديلاتك، وأطفئه حين تنتهي. أنت ترى الموقع الحقيقي من رابط المعاينة.
+      - name: maintenance_badge
+        label: تحت الإنشاء - الشارة العلوية
+        type: string
+      - name: maintenance_title
+        label: تحت الإنشاء - العنوان الكبير
+        type: string
+      - name: maintenance_text
+        label: تحت الإنشاء - النص
+        type: text
+      - name: preview_key
+        label: رمز المعاينة
+        type: string
+        description: افتح sifdim.sa/?preview=الرمز لترى الموقع الحقيقي على جهازك أثناء وضع «تحت الإنشاء». حروف إنجليزية وأرقام فقط.
+      - name: legal_name
+        label: الاسم النظامي للمؤسسة
+        type: string
+      - name: legal_name_en
+        label: الاسم النظامي بالإنجليزية
+        type: string
+      - name: cr_number
+        label: رقم السجل التجاري (يظهر في تذييل الوثائق)
+        type: string
+      - name: address
+        label: العنوان المختصر (يظهر في تذييل الوثائق)
+        type: string
+      - name: manager_name
+        label: اسم المدير العام (يظهر في اعتماد الوثائق)
+        type: string
+      - name: manager_title
+        label: المسمى الوظيفي للمعتمِد
+        type: string
+      - name: docs_title
+        label: اسم مركز الوثائق
+        type: string
+      - name: docs_lead
+        label: وصف مركز الوثائق
+        type: text
+      - name: show_nav
+        label: إظهار روابط التنقل في رأس الصفحة
+        type: boolean
+      - name: sections
+        label: أقسام الصفحة الرئيسية وترتيبها
+        type: select
+        list: true
+        description: اسحب لتغيير الترتيب. احذف قسماً من القائمة لإخفائه، وأضفه لإظهاره. قسم الشركاء لا يظهر إلا إذا كان فيه شريك.
+        options:
+          values:
+            - name: about
+              label: من نحن
+            - name: path
+              label: مسار الممارس
+            - name: vision
+              label: الرؤية والقيم
+            - name: model
+              label: نموذج العمل
+            - name: kpis
+              label: المؤشرات
+            - name: roadmap
+              label: خارطة الطريق
+            - name: partners
+              label: الشركاء
+            - name: governance
+              label: الحوكمة
+            - name: founder
+              label: المؤسس
+            - name: contact
+              label: التواصل
+      - name: show_licenses
+        label: إظهار التراخيص في التذييل
+        type: boolean
+      - name: beta
+        label: إظهار شارة «إطلاق تجريبي»
+        type: boolean
+        description: أطفئها يوم الإطلاق الرسمي.
+      - name: seo_title
+        label: عنوان الصفحة في المتصفح ومحركات البحث
+        type: string
+      - name: seo_description
+        label: وصف الموقع في نتائج البحث والمشاركة
+        type: text
+      - name: logo
+        label: الشعار في رأس الصفحة (للخلفيات الداكنة)
+        type: image
+        options:
+          media: images
+      - name: favicon
+        label: أيقونة الموقع في تبويب المتصفح
+        type: image
+        options:
+          media: images
+      - name: og_image
+        label: صورة المشاركة (تظهر عند إرسال رابط الموقع في واتساب وغيره)
+        type: image
+        options:
+          media: images
+      - name: footer_line
+        label: سطر التذييل
+        type: string
+      - name: footer_motto
+        label: الشعار في التذييل
+        type: string
+      - name: umami_website_id
+        label: رقم الموقع في Umami (للإحصاءات)
+        type: string
+        description: من إعدادات الموقع في Umami، الحقل Website ID.
+      - name: umami_share_url
+        label: رابط مشاركة الإحصاءات من Umami
+        type: string
+        description: يظهر داخل صفحة admin.
+      - name: cms_url
+        label: رابط لوحة التحكم
+        type: string
+  - name: docs
+    label: الوثائق (السياسات والأدلة)
+    type: collection
+    path: _docs
+    format: yaml-frontmatter
+    filename: '{fields.code}.md'
+    view:
+      fields:
+        - code
+        - title
+        - kind
+        - status
+        - version
+      primary: title
+      sort:
+        - order
+        - code
+        - title
+      search:
+        - title
+        - code
+        - summary
+      default:
+        sort: order
+        order: asc
+    fields:
+      - name: title
+        label: عنوان الوثيقة
+        type: string
+        required: true
+      - name: code
+        label: رقم الوثيقة
+        type: string
+        required: true
+        description: حروف إنجليزية وأرقام وشرطات فقط، مثل SIF-POL-04. يُشتق منه رابط الوثيقة واسم ملفها (بحروف صغيرة)، فلا تغيّره بعد النشر.
+        pattern:
+          regex: ^[A-Za-z0-9-]+$
+          message: حروف إنجليزية وأرقام وشرطات فقط، بدون مسافات.
+      - name: kind
+        label: نوع الوثيقة
+        type: select
+        options:
+          values:
+            - إطار حوكمة
+            - سياسة
+            - دليل إجرائي
+            - نموذج
+            - شروط وأحكام
+        default: سياسة
+      - name: order
+        label: الترتيب في القوائم
+        type: number
+      - name: status
+        label: الحالة
+        type: select
+        description: «مسودة» تُظهر علامة مائية وشارة «بانتظار الاعتماد». غيّرها إلى «معتمدة» بعد مراجعتك.
+        options:
+          values:
+            - مسودة
+            - معتمدة
+            - ملغاة
+        default: مسودة
+      - name: version
+        label: رقم الإصدار
+        type: string
+        description: 0.9 للمسودة، 1.0 عند الاعتماد، 1.1 لتعديل صياغي، 2.0 لتعديل يغيّر التزاماً.
+        default: '0.9'
+      - name: issued
+        label: تاريخ الاعتماد
+        type: date
+        default: ''
+        options:
+          format: yyyy-MM-dd
+      - name: review
+        label: تاريخ المراجعة القادمة
+        type: date
+        default: ''
+        options:
+          format: yyyy-MM-dd
+      - name: owner
+        label: مالك الوثيقة
+        type: string
+      - name: approver
+        label: اسم المعتمِد (اتركه فارغاً ليظهر اسم المدير العام)
+        type: string
+      - name: summary
+        label: ملخص من سطرين (يظهر تحت العنوان وفي مركز الوثائق)
+        type: text
+      - name: pdf
+        label: نسخة PDF موقّعة (اختياري)
+        type: file
+        description: إذا رفعت ملفاً هنا فزر «تنزيل PDF» ينزّله. وإذا تركته فارغاً فالزر يولّد PDF من نص الوثيقة الحالي.
+        options:
+          media: files
+          extensions:
+            - pdf
+      - name: in_footer
+        label: إظهار رابطها في تذييل الموقع
+        type: boolean
+        default: false
+      - name: published
+        label: منشورة للعامة
+        type: boolean
+        default: true
+      - name: body
+        label: نص الوثيقة
+        type: rich-text
+        description: كل «عنوان 2» يصير مادة في الفهرس الجانبي. رقّم المواد بنفسك (1. 2. 3.).
+        options:
+          media: false
+      - name: raci
+        label: مصفوفة المسؤوليات RACI (اختياري)
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{activity}'
+        fields:
+          - name: activity
+            label: النشاط
+            type: string
+          - name: r
+            label: المسؤول عن التنفيذ
+            type: string
+          - name: a
+            label: المحاسَب عن النتيجة
+            type: string
+          - name: c
+            label: يُستشار
+            type: string
+          - name: i
+            label: يُعلَم
+            type: string
+      - name: revisions
+        label: سجل التعديلات
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{version} · {change}'
+        fields:
+          - name: version
+            label: الإصدار
+            type: string
+          - name: date
+            label: التاريخ
+            type: date
+            options:
+              format: yyyy-MM-dd
+          - name: change
+            label: التعديل
+            type: string
+  - name: licenses
+    label: التراخيص والشهادات
+    type: file
+    path: _data/licenses.yml
+    format: yaml
+    fields:
+      - name: label
+        label: عنوان القسم في التذييل
+        type: string
+      - name: note
+        label: سطر توضيحي
+        type: string
+      - name: items
+        label: التراخيص
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{name} · {number}'
+        fields:
+          - name: name
+            label: اسم الترخيص
+            type: string
+          - name: issuer
+            label: الجهة المانحة
+            type: string
+          - name: number_label
+            label: تسمية الرقم (مثل «رقم التوثيق»)
+            type: string
+          - name: number
+            label: الرقم
+            type: string
+          - name: expiry
+            label: تاريخ الانتهاء (اختياري)
+            type: string
+          - name: logo
+            label: شعار الجهة
+            type: image
+            options:
+              media: images
+          - name: file
+            label: ملف الشهادة (PDF)
+            type: file
+            options:
+              media: files
+              extensions:
+                - pdf
+          - name: url
+            label: رابط تحقق خارجي (يُستعمل إذا لم يُرفع ملف)
+            type: string
+  - name: nav
+    label: روابط التنقل في رأس الصفحة
+    type: file
+    path: _data/nav.yml
+    format: yaml
+    fields:
+      - name: items
+        label: الروابط
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{label}'
+        fields:
+          - name: label
+            label: النص
+            type: string
+          - name: url
+            label: الرابط
+            type: string
+            description: 'لقسم في الرئيسية: #about أو #path أو #vision أو #model أو #kpis أو #roadmap أو #partners أو #governance أو #founder أو #contact. لصفحة داخلية: /docs/. لموقع خارجي: الرابط كاملاً.'
+          - name: highlight
+            label: تمييزه باللون الذهبي
+            type: boolean
+          - name: mobile
+            label: إظهاره على الجوال أيضاً
+            type: boolean
+  - name: hero
+    label: رأس الصفحة
+    type: file
+    path: _data/hero.yml
+    format: yaml
+    fields:
+      - name: kicker
+        label: السطر الصغير فوق العنوان
+        type: string
+      - name: title
+        label: العنوان الرئيسي
+        type: text
+      - name: lede
+        label: النص التعريفي
+        type: text
+      - name: verb_1
+        label: الكلمة تحت العمود الأول
+        type: string
+      - name: verb_2
+        label: الكلمة تحت العمود الأوسط
+        type: string
+      - name: verb_3
+        label: الكلمة تحت العمود الأخير
+        type: string
+      - name: ticker_ar
+        label: الشريط المتحرك - الشعار بالعربي
+        type: string
+      - name: ticker_en
+        label: الشريط المتحرك - الشعار بالإنجليزي
+        type: string
+      - name: ticker_en_1
+        label: الكلمة الأولى بالإنجليزي
+        type: string
+      - name: ticker_en_2
+        label: الكلمة الثانية بالإنجليزي
+        type: string
+      - name: ticker_en_3
+        label: الكلمة الثالثة بالإنجليزي
+        type: string
+  - name: about
+    label: من نحن والميزة التنافسية
+    type: file
+    path: _data/about.yml
+    format: yaml
+    fields:
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: statement
+        label: النص الرئيسي
+        type: text
+      - name: note
+        label: النص المساند
+        type: text
+      - name: edge_label
+        label: عنوان الميزة الصغير
+        type: string
+      - name: edge_title
+        label: الميزة التنافسية (بخط كبير)
+        type: string
+      - name: edge_text
+        label: شرح الميزة
+        type: text
+  - name: path
+    label: مسار الممارس
+    type: file
+    path: _data/path.yml
+    format: yaml
+    fields:
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: title
+        label: العنوان
+        type: string
+      - name: steps
+        label: الخطوات (الأخيرة تظهر ذهبية منفصلة عن القاعدة)
+        type: string
+        list: true
   - name: vision
-    label: الرؤية
-    type: text
-  - name: mission
-    label: الرسالة
-    type: text
-  - name: values
-    label: القيم
-    type: object
-    list: true
+    label: الرؤية والرسالة والقيم
+    type: file
+    path: _data/vision.yml
+    format: yaml
     fields:
-    - name: name
-      label: القيمة
-      type: string
-    - name: text
-      label: الشرح
-      type: string
-- name: model
-  label: نموذج العمل والمحاور
-  type: file
-  path: _data/model.yml
-  format: yaml
-  fields:
-  - name: label
-    label: اسم القسم
-    type: string
-  - name: title
-    label: العنوان
-    type: string
-  - name: engines
-    label: محركات الإيراد
-    type: object
-    list: true
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: vision
+        label: الرؤية
+        type: text
+      - name: mission
+        label: الرسالة
+        type: text
+      - name: values
+        label: القيم
+        type: object
+        list: true
+        fields:
+          - name: name
+            label: القيمة
+            type: string
+          - name: text
+            label: الشرح
+            type: string
+  - name: model
+    label: نموذج العمل والمحاور
+    type: file
+    path: _data/model.yml
+    format: yaml
     fields:
-    - name: tag
-      label: الاسم الصغير
-      type: string
-    - name: title
-      label: الوصف
-      type: text
-    - name: note
-      label: ملاحظة (اختيارية)
-      type: string
-  - name: pillars
-    label: المحاور الاستراتيجية
-    type: object
-    list: true
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: title
+        label: العنوان
+        type: string
+      - name: engines
+        label: محركات الإيراد
+        type: object
+        list: true
+        fields:
+          - name: tag
+            label: الاسم الصغير
+            type: string
+          - name: title
+            label: الوصف
+            type: text
+          - name: note
+            label: ملاحظة (اختيارية)
+            type: string
+      - name: pillars
+        label: المحاور الاستراتيجية
+        type: object
+        list: true
+        fields:
+          - name: title
+            label: المحور
+            type: string
+          - name: text
+            label: الشرح
+            type: text
+  - name: kpis
+    label: مؤشرات الأداء
+    type: file
+    path: _data/kpis.yml
+    format: yaml
     fields:
-    - name: title
-      label: المحور
-      type: string
-    - name: text
-      label: الشرح
-      type: text
-- name: kpis
-  label: مؤشرات الأداء
-  type: file
-  path: _data/kpis.yml
-  format: yaml
-  fields:
-  - name: label
-    label: اسم القسم
-    type: string
-  - name: title
-    label: العنوان
-    type: string
-  - name: items
-    label: المؤشرات
-    type: object
-    list: true
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: title
+        label: العنوان
+        type: string
+      - name: items
+        label: المؤشرات
+        type: object
+        list: true
+        fields:
+          - name: name
+            label: المؤشر
+            type: string
+          - name: value
+            label: القيمة
+            type: string
+          - name: note
+            label: الوصف الصغير
+            type: string
+  - name: roadmap
+    label: خارطة الطريق والإنجازات
+    type: file
+    path: _data/roadmap.yml
+    format: yaml
     fields:
-    - name: name
-      label: المؤشر
-      type: string
-    - name: value
-      label: القيمة
-      type: string
-    - name: note
-      label: الوصف الصغير
-      type: string
-- name: roadmap
-  label: خارطة الطريق والإنجازات
-  type: file
-  path: _data/roadmap.yml
-  format: yaml
-  fields:
-  - name: label
-    label: اسم القسم
-    type: string
-  - name: title
-    label: العنوان
-    type: string
-  - name: years
-    label: السنوات
-    type: object
-    list: true
-    fields:
-    - name: year
-      label: السنة
-      type: string
-    - name: stage
-      label: المرحلة
-      type: string
-    - name: text
-      label: الوصف
-      type: text
-    - name: done
-      label: أُنجزت (معيّن ممتلئ)
-      type: boolean
-  - name: facts_title
-    label: عنوان الإنجازات
-    type: string
-  - name: facts
-    label: الإنجازات
-    type: object
-    list: true
-    fields:
-    - name: bold
-      label: بداية الجملة (بخط عريض)
-      type: string
-    - name: text
-      label: بقية الجملة
-      type: string
-- name: partners
-  label: الشركاء
-  type: file
-  path: _data/partners.yml
-  format: yaml
-  fields:
-  - name: label
-    label: اسم القسم
-    type: string
-  - name: title
-    label: العنوان
-    type: string
-  - name: lead
-    label: سطر تعريفي (اختياري)
-    type: text
-  - name: items
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: title
+        label: العنوان
+        type: string
+      - name: years
+        label: السنوات
+        type: object
+        list: true
+        fields:
+          - name: year
+            label: السنة
+            type: string
+          - name: stage
+            label: المرحلة
+            type: string
+          - name: text
+            label: الوصف
+            type: text
+          - name: done
+            label: أُنجزت (معيّن ممتلئ)
+            type: boolean
+      - name: facts_title
+        label: عنوان الإنجازات
+        type: string
+      - name: facts
+        label: الإنجازات
+        type: object
+        list: true
+        fields:
+          - name: bold
+            label: بداية الجملة (بخط عريض)
+            type: string
+          - name: text
+            label: بقية الجملة
+            type: string
+  - name: partners
     label: الشركاء
-    type: object
-    list: true
+    type: file
+    path: _data/partners.yml
+    format: yaml
     fields:
-    - name: name
-      label: اسم الشريك
-      type: string
-    - name: logo
-      label: الشعار
-      type: image
-    - name: url
-      label: رابط موقعه (اختياري)
-      type: string
-    - name: note
-      label: نوع الشراكة (اختياري)
-      type: string
-- name: founder
-  label: المؤسس
-  type: file
-  path: _data/founder.yml
-  format: yaml
-  fields:
-  - name: label
-    label: اسم القسم
-    type: string
-  - name: name
-    label: الاسم
-    type: string
-  - name: bio
-    label: النبذة
-    type: text
-  - name: photo
-    label: الصورة الشخصية (طولية، اتركها فارغة لإخفائها)
-    type: image
-  - name: stages
-    label: المراحل
-    type: object
-    list: true
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: title
+        label: العنوان
+        type: string
+      - name: lead
+        label: سطر تعريفي (اختياري)
+        type: text
+      - name: items
+        label: الشركاء
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{name}'
+        fields:
+          - name: name
+            label: اسم الشريك
+            type: string
+          - name: logo
+            label: الشعار
+            type: image
+            options:
+              media: images
+          - name: url
+            label: رابط موقعه (اختياري)
+            type: string
+          - name: note
+            label: نوع الشراكة (اختياري)
+            type: string
+  - name: governance
+    label: قسم الحوكمة في الرئيسية
+    type: file
+    path: _data/governance.yml
+    format: yaml
     fields:
-    - name: year
-      label: السنة
-      type: string
-    - name: title
-      label: المرحلة
-      type: string
-    - name: text
-      label: الوصف
-      type: text
-- name: contact
-  label: التواصل
-  type: file
-  path: _data/contact.yml
-  format: yaml
-  fields:
-  - name: label
-    label: اسم القسم
-    type: string
-  - name: title
-    label: العنوان
-    type: string
-  - name: lead
-    label: السطر تحت العنوان
-    type: string
-  - name: email
-    label: البريد
-    type: string
-  - name: whatsapp
-    label: رقم واتساب كما يظهر
-    type: string
-  - name: whatsapp_intl
-    label: رقم واتساب الدولي للرابط (بدون صفر وبدون +)
-    type: string
-  - name: whatsapp_button
-    label: نص زر واتساب
-    type: string
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: title
+        label: العنوان
+        type: string
+      - name: lead
+        label: السطر التعريفي
+        type: text
+      - name: steps
+        label: مجموعات العمليات
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{name}'
+        fields:
+          - name: name
+            label: الاسم
+            type: string
+          - name: text
+            label: الشرح
+            type: string
+      - name: docs_title
+        label: عنوان قائمة الوثائق
+        type: string
+      - name: docs_button
+        label: نص زر مركز الوثائق
+        type: string
+  - name: founder
+    label: المؤسس
+    type: file
+    path: _data/founder.yml
+    format: yaml
+    fields:
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: name
+        label: الاسم
+        type: string
+      - name: bio
+        label: النبذة
+        type: text
+      - name: photo
+        label: الصورة الشخصية (طولية، اتركها فارغة لإخفائها)
+        type: image
+        options:
+          media: images
+      - name: stages
+        label: المراحل
+        type: object
+        list: true
+        fields:
+          - name: year
+            label: السنة
+            type: string
+          - name: title
+            label: المرحلة
+            type: string
+          - name: text
+            label: الوصف
+            type: text
+  - name: contact
+    label: التواصل
+    type: file
+    path: _data/contact.yml
+    format: yaml
+    fields:
+      - name: label
+        label: اسم القسم
+        type: string
+      - name: title
+        label: العنوان
+        type: string
+      - name: lead
+        label: السطر تحت العنوان
+        type: string
+      - name: email
+        label: البريد
+        type: string
+      - name: whatsapp
+        label: رقم واتساب كما يظهر
+        type: string
+      - name: whatsapp_intl
+        label: رقم واتساب الدولي للرابط (بدون صفر وبدون +)
+        type: string
+      - name: whatsapp_button
+        label: نص زر واتساب
+        type: string
+  - name: labels
+    label: نصوص الواجهة (الأزرار والتسميات)
+    type: file
+    path: _data/labels.yml
+    format: yaml
+    fields:
+      - name: brand_name
+        label: اسم العلامة (نص بديل للشعار)
+        type: string
+      - name: beta_ar
+        label: شارة الإطلاق التجريبي - عربي
+        type: string
+      - name: beta_en
+        label: شارة الإطلاق التجريبي - إنجليزي
+        type: string
+      - name: nav_aria
+        label: وصف قائمة التنقل لقارئ الشاشة
+        type: string
+      - name: mission_prefix
+        label: الكلمة قبل نص الرسالة
+        type: string
+      - name: values_aria
+        label: وصف قائمة القيم لقارئ الشاشة
+        type: string
+      - name: email_label
+        label: تسمية البريد
+        type: string
+      - name: whatsapp_label
+        label: تسمية واتساب
+        type: string
+      - name: copy_email
+        label: زر نسخ البريد
+        type: string
+      - name: copied
+        label: رسالة بعد النسخ
+        type: string
+      - name: cr_label
+        label: تسمية السجل التجاري
+        type: string
+      - name: lic_open
+        label: رابط عرض الشهادة
+        type: string
+      - name: lic_valid_until
+        label: عبارة تاريخ الانتهاء
+        type: string
+      - name: home
+        label: الرئيسية
+        type: string
+      - name: toc
+        label: عنوان الفهرس
+        type: string
+      - name: search_placeholder
+        label: خانة البحث في الوثيقة
+        type: string
+      - name: download_pdf
+        label: زر تنزيل PDF
+        type: string
+      - name: pdf_hint
+        label: تلميح زر التنزيل
+        type: string
+      - name: print
+        label: زر الطباعة
+        type: string
+      - name: font_smaller
+        label: تلميح تصغير الخط
+        type: string
+      - name: font_larger
+        label: تلميح تكبير الخط
+        type: string
+      - name: copy_link
+        label: تلميح نسخ رابط المادة
+        type: string
+      - name: meta_code
+        label: بيانات الوثيقة - الرقم
+        type: string
+      - name: meta_version
+        label: بيانات الوثيقة - الإصدار
+        type: string
+      - name: meta_status
+        label: بيانات الوثيقة - الحالة
+        type: string
+      - name: meta_issued
+        label: بيانات الوثيقة - تاريخ الاعتماد
+        type: string
+      - name: meta_review
+        label: بيانات الوثيقة - المراجعة القادمة
+        type: string
+      - name: meta_owner
+        label: بيانات الوثيقة - المالك
+        type: string
+      - name: draft_badge
+        label: شارة المسودة
+        type: string
+      - name: draft_watermark
+        label: العلامة المائية للمسودة
+        type: string
+      - name: raci_title
+        label: عنوان مصفوفة RACI
+        type: string
+      - name: raci_legend
+        label: مفتاح مصفوفة RACI
+        type: string
+      - name: raci_activity
+        label: RACI - عمود النشاط
+        type: string
+      - name: raci_r
+        label: RACI - عمود المسؤول
+        type: string
+      - name: raci_a
+        label: RACI - عمود المحاسَب
+        type: string
+      - name: raci_c
+        label: RACI - عمود المستشار
+        type: string
+      - name: raci_i
+        label: RACI - عمود المُعلَم
+        type: string
+      - name: rev_title
+        label: عنوان سجل التعديلات
+        type: string
+      - name: rev_version
+        label: سجل التعديلات - عمود الإصدار
+        type: string
+      - name: rev_date
+        label: سجل التعديلات - عمود التاريخ
+        type: string
+      - name: rev_change
+        label: سجل التعديلات - عمود التعديل
+        type: string
+      - name: approved_by
+        label: عبارة الاعتماد
+        type: string
+      - name: awaiting_approval
+        label: عبارة انتظار الاعتماد
+        type: string
+      - name: other_docs
+        label: وصف قائمة الوثائق الأخرى
+        type: string
+      - name: preview_bar
+        label: نص شريط المعاينة
+        type: string
+      - name: preview_exit
+        label: زر الخروج من المعاينة
+        type: string
+  - name: theme
+    label: الألوان والحركة
+    type: file
+    path: _data/theme.yml
+    format: yaml
+    fields:
+      - name: navy
+        label: الكحلي الأساسي
+        type: string
+        description: رمز اللون بصيغة ‎#RRGGBB. اتركه فارغاً للعودة إلى لون الهوية الأصلي.
+      - name: gold
+        label: الذهبي
+        type: string
+      - name: ivory
+        label: العاجي (خلفية الأقسام الدافئة)
+        type: string
+      - name: cloud
+        label: رمادي السحاب (خلفية الصفحة)
+        type: string
+      - name: nebula
+        label: بنفسجي السديم (توهج الرمز)
+        type: string
+      - name: gold_text
+        label: ذهبي النصوص الصغيرة على الخلفيات الفاتحة
+        type: string
+        description: اتركه فارغاً ما لم تغيّر الذهبي. يجب أن يكون أغمق من الذهبي ليُقرأ على الأبيض.
+      - name: ticker_ar_seconds
+        label: مدة دورة الشريط العربي بالثواني (الأكبر أبطأ)
+        type: number
+      - name: ticker_en_seconds
+        label: مدة دورة الشريط الإنجليزي بالثواني
+        type: number
