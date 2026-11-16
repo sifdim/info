@@ -1,0 +1,27 @@
+name: بِكسلة
+name_en: Bixala
+logo: /assets/img/pixla/logo-white.png
+tagline: كل بكسل يحمل أصالة الماضي
+about: منصة تحوّل القطع التراثية العائلية من صور عادية إلى نماذج ثلاثية الأبعاد تفاعلية، تُستكشف بالواقع المعزز على أي هاتف، وترافقها قصة القطعة.
+website: https://bixala.i3j.io
+website_label: موقع بِكسلة
+gallery: https://bixsrsh.i3j.io
+gallery_label: المعرض الرقمي
+footer: بِكسلة · مبادرة تطوعية ضمن أجاويد 4
+parent_show: true
+parent_label: من منتجات
+parent_name: سيفديم
+parent_logo: /assets/img/logo-on-dark.png
+parent_url: https://sifdim.sa
+parent_footer: بِكسلة أحد منتجات سيفديم
+freelance_badge: ممارس عمل حر مرخّص
+license_title: وثيقة العمل الحر
+license_issuer: منصة العمل الحر · وزارة الموارد البشرية والتنمية الاجتماعية
+license_button: عرض الوثيقة
+team_title: فريق بِكسلة
+show_team: true
+red: '#E94E37'
+green: '#00C065'
+background: '#0E0F11'
+save_label: حفظ جهة الاتصال
+share_label: مشاركة الصفحة

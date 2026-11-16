@@ -1,0 +1,363 @@
+{%- comment -%}
+  صفحة عضو في فريق بِكسلة (تُفتح من بطاقة NFC). كل ما فيها يُعدَّل من لوحة التحكم:
+  بيانات العضو من «فريق بِكسلة»، والشعار والألوان والنبذة العامة من «إعدادات بِكسلة».
+  الصفحة مستقلة عن هوية سيفديم ولا يشملها وضع «تحت الإنشاء».
+{%- endcomment -%}
+{%- assign P = site.data.pixla -%}
+{%- assign m = page -%}
+
+{%- comment -%} واتساب: يقبل 05xxxxxxxx أو +966... أو 00966... ويحوّلها لصيغة wa.me {%- endcomment -%}
+{%- assign wa = m.whatsapp | append: '' | remove: ' ' | remove: '+' | remove: '-' | remove: '(' | remove: ')' -%}
+{%- assign wa2 = wa | slice: 0, 2 -%}
+{%- if wa2 == '00' -%}{%- assign wa = wa | slice: 2, 30 -%}{%- elsif wa2 == '05' -%}{%- assign wa_rest = wa | slice: 1, 30 -%}{%- assign wa = '966' | append: wa_rest -%}{%- endif -%}
+{%- assign tel = m.phone | append: '' | remove: ' ' | remove: '-' -%}
+{%- assign initial = m.name | slice: 0, 1 -%}
+{%- capture page_url -%}{{ site.url }}{{ m.url }}{%- endcapture -%}
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ m.name }} · {{ P.name }}</title>
+  <meta name="description" content="{{ m.role | escape }} في {{ P.name }}. {{ m.bio | strip_newlines | truncate: 140 | escape }}">
+  <meta name="theme-color" content="{{ P.background | default: '#0E0F11' }}">
+  {%- if m.noindex %}<meta name="robots" content="noindex">{% endif %}
+  <meta property="og:type" content="profile">
+  <meta property="og:title" content="{{ m.name | escape }} · {{ P.name }}">
+  <meta property="og:description" content="{{ m.role | escape }}">
+  {%- if m.photo != blank %}<meta property="og:image" content="{{ m.photo | absolute_url }}">{% elsif P.logo != blank %}<meta property="og:image" content="{{ P.logo | absolute_url }}">{% endif %}
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%2300C065' d='M3 0h2v2h2v2H5v4H3V4H1V2h2z'/%3E%3C/svg%3E">
+  <style>
+    @font-face{font-family:'IBM Plex Sans Arabic';src:url('{{ "/assets/fonts/IBMPlexSansArabic-Regular.woff2" | relative_url }}') format('woff2');font-weight:400;font-display:swap}
+    @font-face{font-family:'IBM Plex Sans Arabic';src:url('{{ "/assets/fonts/IBMPlexSansArabic-Medium.woff2" | relative_url }}') format('woff2');font-weight:500;font-display:swap}
+    @font-face{font-family:'IBM Plex Sans Arabic';src:url('{{ "/assets/fonts/IBMPlexSansArabic-SemiBold.woff2" | relative_url }}') format('woff2');font-weight:600;font-display:swap}
+    @font-face{font-family:'IBM Plex Sans Arabic';src:url('{{ "/assets/fonts/IBMPlexSansArabic-Bold.woff2" | relative_url }}') format('woff2');font-weight:700;font-display:swap}
+
+    :root{
+      --red:{{ P.red | default: '#E94E37' }};
+      --green:{{ P.green | default: '#00C065' }};
+      --bg:{{ P.background | default: '#0E0F11' }};
+      --card:rgba(255,255,255,.045);
+      --line:rgba(255,255,255,.09);
+      --ink:#F4F4F2;
+      --body:#C9CBCF;
+      --muted:#8C9097;
+      --font:'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;
+      /* زاوية «بكسلية» متدرجة تُستعمل في الصورة والأزرار */
+      --px:polygon(0 12px,6px 12px,6px 6px,12px 6px,12px 0,calc(100% - 12px) 0,calc(100% - 12px) 6px,calc(100% - 6px) 6px,calc(100% - 6px) 12px,100% 12px,100% calc(100% - 12px),calc(100% - 6px) calc(100% - 12px),calc(100% - 6px) calc(100% - 6px),calc(100% - 12px) calc(100% - 6px),calc(100% - 12px) 100%,12px 100%,12px calc(100% - 6px),6px calc(100% - 6px),6px calc(100% - 12px),0 calc(100% - 12px));
+    }
+    *{box-sizing:border-box}
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;min-height:100vh;background:var(--bg);color:var(--body);font:400 16px/1.8 var(--font);overflow-x:hidden}
+    a{color:inherit}
+    /* نقش القط العسيري (من شعار بِكسلة) خلف الرأس */
+    .backdrop{position:absolute;inset:0 0 auto 0;height:340px;z-index:0;pointer-events:none;opacity:.55;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='%23E94E37' fill-opacity='.22'%3E%3Cpath d='M28 22l6 6-6 6-6-6z'/%3E%3C/g%3E%3Cg fill='%23ffffff' fill-opacity='.05'%3E%3Cpath d='M0 0h4v4H0zM52 52h4v4h-4z'/%3E%3C/g%3E%3C/svg%3E");
+      -webkit-mask-image:linear-gradient(#000,transparent);mask-image:linear-gradient(#000,transparent)}
+    .wrap{position:relative;z-index:1;max-width:520px;margin:0 auto;padding:max(22px,env(safe-area-inset-top)) 16px 40px}
+    .top{display:flex;flex-direction:column;align-items:center;gap:10px;padding:6px 0 26px}
+    .top > img{height:44px;width:auto;display:block}
+    .parent{display:inline-flex;align-items:center;gap:7px;padding:3px 12px 3px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--muted);text-decoration:none}
+    .parent img{height:18px;width:auto;display:block}
+    .parent b{color:var(--ink);font-weight:600}
+    .badges{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:12px}
+    .badges .role{margin-top:0}
+    .fl{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:600;color:var(--green);background:color-mix(in srgb,var(--green) 13%,transparent);text-decoration:none}
+    .fl svg{width:15px;height:15px}
+    .lic{padding:18px;background:var(--card);border:1px solid var(--line);border-radius:18px}
+    .lic-h{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .lic-h .ic{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:12px;background:color-mix(in srgb,var(--green) 14%,transparent);color:var(--green)}
+    .lic-h .ic svg{width:22px;height:22px}
+    .lic-h b{display:block;color:var(--ink);font-weight:600;line-height:1.4}
+    .lic-h small{display:block;color:var(--muted);font-size:12.5px;line-height:1.5}
+    .lic dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:14px}
+    .lic dt{color:var(--muted)}
+    .lic dd{margin:0;color:var(--ink);font-weight:500}
+    .lic dd.num{direction:ltr;text-align:right;font-variant-numeric:tabular-nums;letter-spacing:.03em}
+    .lic dd .st{display:inline-block;margin-inline-start:6px;padding:0 8px;border-radius:999px;font-size:12px;font-weight:600;color:var(--green);background:color-mix(in srgb,var(--green) 13%,transparent)}
+    .lic dd .st.off{color:var(--red);background:color-mix(in srgb,var(--red) 14%,transparent)}
+    .lic .btn{margin-top:16px;width:100%}
+    footer a{color:var(--ink);text-decoration:none;font-weight:600}
+    .top .word{font-size:26px;font-weight:700;color:var(--ink)}
+
+    .hero{text-align:center}
+    .avatar{width:136px;height:136px;margin:0 auto 18px;position:relative}
+    .avatar::before{content:"";position:absolute;inset:-6px;background:linear-gradient(135deg,var(--red),var(--green));clip-path:var(--px)}
+    .avatar .in{position:absolute;inset:0;clip-path:var(--px);background:#1A1C20;display:grid;place-items:center;overflow:hidden}
+    .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .avatar .ch{font-size:58px;font-weight:700;color:var(--ink);line-height:1}
+    h1{margin:0;font-size:28px;line-height:1.35;font-weight:700;color:var(--ink)}
+    .en{margin:2px 0 0;font-size:14px;color:var(--muted);letter-spacing:.04em;direction:ltr}
+    .role{display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:4px 14px;border:1px solid var(--line);border-radius:999px;font-size:14px;font-weight:500;color:var(--ink)}
+    .role i{width:8px;height:8px;background:var(--green);display:block}
+    .bio{margin:18px auto 0;max-width:42ch;font-size:15.5px}
+
+    .cta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:26px 0 8px}
+    .cta.one{grid-template-columns:1fr}
+    .cta{grid-template-columns:1.25fr 1fr}
+    .btn{appearance:none;border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:10px 12px;font:600 15px/1.3 var(--font);white-space:nowrap;text-decoration:none;clip-path:var(--px)}
+    .btn svg{width:20px;height:20px;flex:none}
+    .btn.primary{background:var(--green);color:#06140C}
+    .btn.ghost{background:rgba(255,255,255,.08);color:var(--ink)}
+    .btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+    .btn:active{transform:translateY(1px)}
+
+    h2{margin:30px 0 12px;font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--muted)}
+    .list{display:grid;gap:8px}
+    .row{display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--ink);transition:background .15s}
+    .row:hover{background:rgba(255,255,255,.08)}
+    .row .ic{width:40px;height:40px;flex:none;display:grid;place-items:center;background:rgba(255,255,255,.06);border-radius:10px;color:var(--green)}
+    .row .ic svg{width:20px;height:20px}
+    .row .tx{min-width:0;flex:1}
+    .row b{display:block;font-weight:600;font-size:15px;line-height:1.4}
+    .row small{display:block;color:var(--muted);font-size:13px;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;direction:ltr;text-align:right}
+    .row .go{color:var(--muted);flex:none}
+
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chips span{padding:6px 12px;background:var(--card);border:1px solid var(--line);border-radius:10px;font-size:14px;color:var(--ink)}
+
+    .about{margin-top:30px;padding:20px;background:var(--card);border:1px solid var(--line);border-radius:18px;position:relative;overflow:hidden}
+    .about::after{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:linear-gradient(var(--red),var(--green))}
+    .about img{height:30px;width:auto;display:block;margin-bottom:10px}
+    .about q{display:block;quotes:none;color:var(--ink);font-weight:600;margin-bottom:6px}
+    .about p{margin:0;font-size:14.5px}
+    .about .links{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+    .about .links a{font-size:14px;font-weight:600;text-decoration:none;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.07);color:var(--ink)}
+
+    .team{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+    .mate{display:flex;align-items:center;gap:10px;padding:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--ink)}
+    .mate .mi{width:38px;height:38px;flex:none;clip-path:var(--px);background:#1F2227;display:grid;place-items:center;overflow:hidden;font-weight:700}
+    .mate .mi img{width:100%;height:100%;object-fit:cover}
+    .mate span{font-size:14px;font-weight:600;line-height:1.35}
+    .mate small{display:block;font-size:12px;color:var(--muted);font-weight:400}
+
+    footer{margin-top:36px;text-align:center;font-size:13px;color:var(--muted)}
+    .toast{position:fixed;inset:auto 16px max(16px,env(safe-area-inset-bottom)) 16px;max-width:420px;margin:0 auto;padding:12px 16px;border-radius:12px;background:var(--ink);color:#111;text-align:center;font-weight:600;font-size:14px;transform:translateY(calc(100% + 40px));visibility:hidden;transition:transform .25s,visibility .25s;z-index:9}
+    .toast.on{transform:none;visibility:visible}
+    @media (prefers-reduced-motion:reduce){.toast{transition:none}}
+  </style>
+</head>
+<body>
+<div class="backdrop" aria-hidden="true"></div>
+<main class="wrap">
+  <div class="top">
+    {%- if P.logo != blank %}<img src="{{ P.logo | relative_url }}" alt="{{ P.name }}">{% else %}<span class="word">{{ P.name }}</span>{% endif %}
+    {%- if P.parent_show != false and P.parent_name != blank %}
+    <a class="parent" href="{{ P.parent_url | default: '/' }}">{{ P.parent_label | default: 'من منتجات' }} {% if P.parent_logo != blank %}<img src="{{ P.parent_logo | relative_url }}" alt="{{ P.parent_name }}">{% else %}<b>{{ P.parent_name }}</b>{% endif %}</a>
+    {%- endif %}
+  </div>
+
+  <section class="hero">
+    <div class="avatar"><div class="in">
+      {%- if m.photo != blank %}<img src="{{ m.photo | relative_url }}" alt="{{ m.name | escape }}">{% else %}<span class="ch" aria-hidden="true">{{ initial }}</span>{% endif %}
+    </div></div>
+    <h1>{{ m.name }}</h1>
+    {%- if m.name_en != blank %}<p class="en">{{ m.name_en }}</p>{% endif %}
+    <div class="badges">
+      {%- if m.role != blank %}<div class="role"><i aria-hidden="true"></i>{{ m.role }}{% if m.org != blank %} · {{ m.org }}{% endif %}</div>{% endif %}
+      {%- if m.freelance %}<a class="fl" href="#license"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 2l3 2.5 3.8-.3.6 3.8L22 10.8l-1.8 3.4.4 3.8-3.7 1-2 3.3-3-1.6-3.6 1.4-1.7-3.5-3.7-1.1.5-3.8L2 10.4 4.8 7.9l.5-3.8 3.8.2z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>{{ P.freelance_badge | default: 'ممارس عمل حر مرخّص' }}</a>{% endif %}
+    </div>
+    {%- if m.bio != blank %}<p class="bio">{{ m.bio }}</p>{% endif %}
+  </section>
+
+  <div class="cta{% if m.save_contact == false %} one{% endif %}">
+    {%- if m.save_contact != false %}
+    <button class="btn primary" type="button" id="save">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M2 21c0-4 3.6-7 8-7"/><path d="M18 14v8M14 18h8"/></svg>
+      {{ P.save_label | default: 'حفظ جهة الاتصال' }}
+    </button>
+    {%- endif %}
+    <button class="btn ghost" type="button" id="share">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v13M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
+      {{ P.share_label | default: 'مشاركة الصفحة' }}
+    </button>
+  </div>
+
+  {%- assign has_contact = false -%}
+  {%- if tel != blank or wa != blank or m.email != blank or m.links.size > 0 -%}{%- assign has_contact = true -%}{%- endif -%}
+  {%- if has_contact %}
+  <h2>التواصل</h2>
+  <div class="list">
+    {%- if wa != blank %}
+    <a class="row" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 21l1.7-5A8.5 8.5 0 1 1 8 19.3z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-1 .8a4 4 0 0 1-2-2l.8-1-1-2z"/></svg></span>
+      <span class="tx"><b>واتساب</b><small>{{ m.whatsapp }}</small></span><span class="go" aria-hidden="true">‹</span>
+    </a>
+    {%- endif %}
+    {%- if tel != blank %}
+    <a class="row" href="tel:{{ tel }}">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg></span>
+      <span class="tx"><b>اتصال</b><small>{{ m.phone }}</small></span><span class="go" aria-hidden="true">‹</span>
+    </a>
+    {%- endif %}
+    {%- if m.email != blank %}
+    <a class="row" href="mailto:{{ m.email }}">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+      <span class="tx"><b>البريد الإلكتروني</b><small>{{ m.email }}</small></span><span class="go" aria-hidden="true">‹</span>
+    </a>
+    {%- endif %}
+    {%- for l in m.links %}{%- if l.url != blank %}
+    {%- case l.kind -%}
+      {%- when 'linkedin' -%}{%- assign lk = 'لينكدإن' -%}
+      {%- when 'x' -%}{%- assign lk = 'إكس (تويتر)' -%}
+      {%- when 'instagram' -%}{%- assign lk = 'إنستقرام' -%}
+      {%- when 'snapchat' -%}{%- assign lk = 'سناب شات' -%}
+      {%- when 'tiktok' -%}{%- assign lk = 'تيك توك' -%}
+      {%- when 'youtube' -%}{%- assign lk = 'يوتيوب' -%}
+      {%- when 'github' -%}{%- assign lk = 'GitHub' -%}
+      {%- when 'behance' -%}{%- assign lk = 'Behance' -%}
+      {%- when 'portfolio' -%}{%- assign lk = 'معرض الأعمال' -%}
+      {%- else -%}{%- assign lk = 'رابط' -%}
+    {%- endcase -%}
+    <a class="row" href="{{ l.url }}" target="_blank" rel="noopener">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></span>
+      <span class="tx"><b>{{ l.label | default: lk }}</b><small>{{ l.url | remove: 'https://' | remove: 'http://' | remove: 'www.' }}</small></span><span class="go" aria-hidden="true">‹</span>
+    </a>
+    {%- endif %}{%- endfor %}
+  </div>
+  {%- endif %}
+
+  {%- if m.projects.size > 0 %}
+  <h2>يعمل على</h2>
+  <div class="chips">{% for p in m.projects %}{% if p != blank %}<span>{{ p }}</span>{% endif %}{% endfor %}</div>
+  {%- endif %}
+
+  {%- if m.freelance %}
+  {%- assign today = site.time | date: '%Y-%m-%d' -%}
+  {%- assign exp = '' -%}{%- if m.license_expiry != blank -%}{%- assign exp = m.license_expiry | date: '%Y-%m-%d' -%}{%- endif -%}
+  <h2 id="license">{{ P.license_title | default: 'وثيقة العمل الحر' }}</h2>
+  <section class="lic">
+    <div class="lic-h">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h6M7 13h4"/><circle cx="16.5" cy="14.5" r="2.5"/><path d="M15 17l-.5 3 2-1 2 1-.5-3"/></svg></span>
+      <span><b>{{ P.freelance_badge | default: 'ممارس عمل حر مرخّص' }}</b><small>{{ P.license_issuer }}</small></span>
+    </div>
+    <dl>
+      {%- if m.license_field != blank %}<dt>التخصص</dt><dd>{{ m.license_field }}</dd>{% endif %}
+      {%- if m.license_number != blank %}<dt>رقم الوثيقة</dt><dd class="num">{{ m.license_number }}</dd>{% endif %}
+      {%- if exp != '' %}<dt>تنتهي في</dt><dd><span class="num" dir="ltr">{{ exp }}</span>{% if exp < today %}<span class="st off">منتهية</span>{% else %}<span class="st">سارية</span>{% endif %}</dd>{% endif %}
+    </dl>
+    {%- if m.license_file != blank %}
+    <a class="btn ghost" href="{{ m.license_file | relative_url }}" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M9 14h6M9 17h4"/></svg>
+      {{ P.license_button | default: 'عرض الوثيقة' }}
+    </a>
+    {%- endif %}
+  </section>
+  {%- endif %}
+
+  <section class="about">
+    {%- if P.logo != blank %}<img src="{{ P.logo | relative_url }}" alt="{{ P.name }}">{% endif %}
+    {%- if P.tagline != blank %}<q>{{ P.tagline }}</q>{% endif %}
+    {%- if P.about != blank %}<p>{{ P.about }}</p>{% endif %}
+    {%- if P.website != blank or P.gallery != blank %}
+    <div class="links">
+      {%- if P.website != blank %}<a href="{{ P.website }}" target="_blank" rel="noopener">{{ P.website_label | default: 'الموقع' }}</a>{% endif %}
+      {%- if P.gallery != blank %}<a href="{{ P.gallery }}" target="_blank" rel="noopener">{{ P.gallery_label | default: 'المعرض' }}</a>{% endif %}
+    </div>
+    {%- endif %}
+  </section>
+
+  {%- if P.show_team != false %}
+  {%- assign mates = site.team | sort: 'order' -%}
+  {%- if mates.size > 1 %}
+  <h2>{{ P.team_title | default: 'الفريق' }}</h2>
+  <div class="team">
+    {%- for t in mates %}{%- if t.url != m.url and t.published != false %}
+    <a class="mate" href="{{ t.url | relative_url }}">
+      <span class="mi">{% if t.photo != blank %}<img src="{{ t.photo | relative_url }}" alt="" loading="lazy">{% else %}{{ t.name | slice: 0, 1 }}{% endif %}</span>
+      <span>{{ t.name }}<small>{{ t.role }}</small></span>
+    </a>
+    {%- endif %}{%- endfor %}
+  </div>
+  {%- endif %}
+  {%- endif %}
+
+  <footer>
+    {%- if P.footer != blank %}<div>{{ P.footer }}</div>{% endif %}
+    {%- if P.parent_show != false and P.parent_footer != blank %}<div><a href="{{ P.parent_url | default: '/' }}">{{ P.parent_footer }}</a></div>{% endif %}
+  </footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var D = {
+    name: {{ m.name | jsonify }},
+    nameEn: {{ m.name_en | default: '' | jsonify }},
+    role: {{ m.role | default: '' | jsonify }},
+    org: {{ m.org | default: P.name | jsonify }},
+    phone: {{ m.phone | default: '' | append: '' | jsonify }},
+    wa: {{ wa | default: '' | jsonify }},
+    email: {{ m.email | default: '' | jsonify }},
+    photo: {% if m.photo != blank %}{{ m.photo | relative_url | jsonify }}{% else %}''{% endif %},
+    url: location.origin + location.pathname,
+    slug: {{ m.slug | default: page.name | default: 'contact' | jsonify }}
+  };
+  var toast = document.getElementById('toast'), tt;
+  function say(t) { toast.textContent = t; toast.classList.add('on'); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove('on'); }, 2400); }
+  function esc(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/([,;])/g, '\\$1'); }
+
+  function vcard(photoB64) {
+    var L = ['BEGIN:VCARD', 'VERSION:3.0', 'FN;CHARSET=UTF-8:' + esc(D.name), 'N;CHARSET=UTF-8:;' + esc(D.name) + ';;;'];
+    if (D.org) L.push('ORG;CHARSET=UTF-8:' + esc(D.org));
+    if (D.role) L.push('TITLE;CHARSET=UTF-8:' + esc(D.role));
+    if (D.phone) L.push('TEL;TYPE=CELL:' + D.phone.replace(/\s+/g, ''));
+    if (D.wa && (!D.phone || D.phone.replace(/\D/g, '').slice(-9) !== D.wa.slice(-9))) L.push('TEL;TYPE=CELL,WhatsApp:+' + D.wa);
+    if (D.email) L.push('EMAIL;TYPE=INTERNET:' + D.email);
+    L.push('URL:' + D.url);
+    if (D.nameEn) L.push('NOTE;CHARSET=UTF-8:' + esc(D.nameEn));
+    if (photoB64) L.push('PHOTO;ENCODING=b;TYPE=JPEG:' + photoB64);
+    L.push('END:VCARD');
+    return L.join('\r\n');
+  }
+
+  function photoToB64() {
+    if (!D.photo) return Promise.resolve('');
+    return new Promise(function (res) {
+      var img = new Image();
+      img.onload = function () {
+        try {
+          var s = 240, c = document.createElement('canvas'); c.width = c.height = s;
+          var k = Math.max(s / img.width, s / img.height), w = img.width * k, h = img.height * k;
+          c.getContext('2d').drawImage(img, (s - w) / 2, (s - h) / 2, w, h);
+          res(c.toDataURL('image/jpeg', 0.82).split(',')[1]);
+        } catch (e) { res(''); }
+      };
+      img.onerror = function () { res(''); };
+      img.src = D.photo;
+    });
+  }
+
+  var save = document.getElementById('save');
+  if (save) save.addEventListener('click', function () {
+    photoToB64().then(function (b64) {
+      var blob = new Blob([vcard(b64)], { type: 'text/vcard;charset=utf-8' });
+      var file = D.slug + '.vcf';
+      // على الجوال: مشاركة الملف تفتح «إضافة جهة اتصال» مباشرة حين يدعمها المتصفح
+      try {
+        var f = new File([blob], file, { type: 'text/vcard' });
+        if (navigator.canShare && navigator.canShare({ files: [f] }) && /iPhone|iPad|Android/i.test(navigator.userAgent)) {
+          navigator.share({ files: [f] }).catch(function () { download(blob, file); });
+          return;
+        }
+      } catch (e) {}
+      download(blob, file);
+    });
+  });
+  function download(blob, file) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = file;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+  }
+
+  document.getElementById('share').addEventListener('click', function () {
+    var data = { title: document.title, url: D.url };
+    if (navigator.share) { navigator.share(data).catch(function () {}); return; }
+    if (navigator.clipboard) navigator.clipboard.writeText(D.url).then(function () { say('نُسخ رابط الصفحة'); }, function () { say(D.url); });
+    else say(D.url);
+  });
+})();
+</script>
+</body>
+</html>

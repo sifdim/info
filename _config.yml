@@ -9,8 +9,17 @@ collections:
   docs:
     output: true
     permalink: /docs/:name/
+  # صفحات فريق بِكسلة (بطاقات NFC): كل ملف داخل _team يصير صفحة على الرابط /اسم-الملف/ مثل sifdim.sa/saeed
+  team:
+    output: true
+    permalink: /:name/
 
 defaults:
+  - scope:
+      path: ""
+      type: team
+    values:
+      layout: member
   - scope:
       path: ""
       type: docs
