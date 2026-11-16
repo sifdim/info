@@ -1,22 +1,13 @@
 ---
-slug: muath
 name: معاذ
+slug: muath
 name_en: Muath
 role: عضو فريق بِكسلة
 org: بِكسلة
-photo: ''
-bio: ''
-projects: []
-phone: ''
-whatsapp: ''
-email: ''
-links: []
+photo: /assets/img/team/IMG_5943.jpg
 freelance: true
-license_field: ''
-license_number: ''
-license_expiry: ''
-license_file: ''
 save_contact: true
+noindex: false
 order: 4
 published: true
 ---
