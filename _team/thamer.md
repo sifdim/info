@@ -1,22 +1,13 @@
 ---
-slug: thamer
 name: ثامر
+slug: thamer
 name_en: Thamer
 role: عضو فريق بِكسلة
 org: بِكسلة
-photo: ''
-bio: ''
-projects: []
-phone: ''
-whatsapp: ''
-email: ''
-links: []
+photo: /assets/img/team/IMG_5956.jpg
 freelance: true
-license_field: ''
-license_number: ''
-license_expiry: ''
-license_file: ''
 save_contact: true
+noindex: false
 order: 3
 published: true
 ---
