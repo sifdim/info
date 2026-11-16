@@ -13,6 +13,25 @@ media:
       - webp
       - svg
       - gif
+  - name: team_photos
+    label: صور فريق بِكسلة
+    input: assets/img/team
+    output: /assets/img/team
+    extensions:
+      - png
+      - jpg
+      - jpeg
+      - webp
+  - name: team_licenses
+    label: وثائق العمل الحر لفريق بِكسلة
+    input: assets/files/team
+    output: /assets/files/team
+    extensions:
+      - pdf
+      - png
+      - jpg
+      - jpeg
+      - webp
   - name: files
     label: الملفات والشهادات (PDF)
     input: assets/files
@@ -141,6 +160,243 @@ content:
         description: يظهر داخل صفحة admin.
       - name: cms_url
         label: رابط لوحة التحكم
+        type: string
+  - name: team
+    label: فريق بِكسلة (صفحات بطاقات NFC)
+    type: collection
+    path: _team
+    format: yaml-frontmatter
+    filename: '{fields.slug}.md'
+    view:
+      fields:
+        - name
+        - role
+        - slug
+        - published
+      primary: name
+      sort:
+        - order
+        - name
+      default:
+        sort: order
+        order: asc
+    fields:
+      - name: name
+        label: الاسم بالعربي
+        type: string
+        required: true
+      - name: slug
+        label: رابط الصفحة
+        type: string
+        required: true
+        description: حروف إنجليزية صغيرة وأرقام وشرطات فقط. الصفحة تكون على sifdim.sa/الرابط، وهو المكتوب على بطاقة NFC، فلا تغيّره بعد كتابة البطاقة.
+        pattern:
+          regex: ^[a-z0-9-]+$
+          message: حروف إنجليزية صغيرة وأرقام وشرطات فقط، بدون مسافات.
+      - name: name_en
+        label: الاسم بالإنجليزي (اختياري)
+        type: string
+      - name: role
+        label: الدور في الفريق
+        type: string
+      - name: org
+        label: الجهة (تظهر بجانب الدور وفي جهة الاتصال)
+        type: string
+        default: بِكسلة
+      - name: photo
+        label: الصورة الشخصية
+        type: image
+        description: صورة مربعة أو قريبة من المربع. إذا تركتها فارغة يظهر أول حرف من الاسم.
+        options:
+          media: team_photos
+      - name: bio
+        label: نبذة قصيرة
+        type: text
+      - name: projects
+        label: يعمل على (كل سطر بند)
+        type: string
+        list: true
+      - name: whatsapp
+        label: رقم الواتساب
+        type: string
+        description: مثل 0512345678. اتركه فارغاً لإخفاء زر واتساب.
+      - name: phone
+        label: رقم الاتصال
+        type: string
+        description: اتركه فارغاً لإخفاء زر الاتصال.
+      - name: email
+        label: البريد الإلكتروني
+        type: string
+      - name: links
+        label: روابط التواصل والحسابات
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{kind} · {url}'
+        fields:
+          - name: kind
+            label: النوع
+            type: select
+            options:
+              values:
+                - name: linkedin
+                  label: لينكدإن
+                - name: x
+                  label: إكس (تويتر)
+                - name: instagram
+                  label: إنستقرام
+                - name: snapchat
+                  label: سناب شات
+                - name: tiktok
+                  label: تيك توك
+                - name: youtube
+                  label: يوتيوب
+                - name: github
+                  label: GitHub
+                - name: behance
+                  label: Behance
+                - name: portfolio
+                  label: معرض الأعمال
+                - name: other
+                  label: رابط آخر
+          - name: url
+            label: الرابط الكامل (يبدأ بـ https://)
+            type: string
+          - name: label
+            label: نص الزر (اختياري، يُكتب تلقائياً من النوع)
+            type: string
+      - name: freelance
+        label: ممارس عمل حر مرخّص
+        type: boolean
+        default: true
+        description: يُظهر شارة «ممارس عمل حر مرخّص» وبطاقة الوثيقة.
+      - name: license_field
+        label: تخصص الوثيقة (كما في وثيقة العمل الحر)
+        type: string
+      - name: license_number
+        label: رقم وثيقة العمل الحر
+        type: string
+      - name: license_expiry
+        label: تاريخ انتهاء الوثيقة
+        type: date
+        default: ''
+        description: تظهر «سارية» أو «منتهية» حسب هذا التاريخ.
+        options:
+          format: yyyy-MM-dd
+      - name: license_file
+        label: نسخة الوثيقة (PDF أو صورة)
+        type: file
+        description: تُنشر للعامة ويظهر زر «عرض الوثيقة». غطِّ رقم الهوية وأي بيانات شخصية قبل الرفع.
+        options:
+          media: team_licenses
+      - name: save_contact
+        label: إظهار زر «حفظ جهة الاتصال»
+        type: boolean
+        default: true
+      - name: noindex
+        label: إخفاء الصفحة عن محركات البحث
+        type: boolean
+        default: false
+      - name: order
+        label: الترتيب في قائمة الفريق
+        type: number
+      - name: published
+        label: الصفحة منشورة
+        type: boolean
+        default: true
+        description: أطفئه لإيقاف الصفحة (البطاقة تفتح صفحة غير موجودة).
+  - name: pixla
+    label: إعدادات بِكسلة (تظهر في كل صفحات الفريق)
+    type: file
+    path: _data/pixla.yml
+    format: yaml
+    fields:
+      - name: name
+        label: اسم المبادرة
+        type: string
+      - name: name_en
+        label: الاسم بالإنجليزي
+        type: string
+      - name: logo
+        label: الشعار (نسخة فاتحة للخلفية الداكنة)
+        type: image
+        options:
+          media: images
+      - name: tagline
+        label: الشعار النصي
+        type: string
+      - name: about
+        label: نبذة عن بِكسلة
+        type: text
+      - name: website
+        label: رابط موقع بِكسلة
+        type: string
+      - name: website_label
+        label: نص زر الموقع
+        type: string
+      - name: gallery
+        label: رابط المعرض الرقمي
+        type: string
+      - name: gallery_label
+        label: نص زر المعرض
+        type: string
+      - name: show_team
+        label: إظهار بقية الفريق أسفل كل صفحة
+        type: boolean
+      - name: team_title
+        label: عنوان قائمة الفريق
+        type: string
+      - name: save_label
+        label: نص زر حفظ جهة الاتصال
+        type: string
+      - name: share_label
+        label: نص زر المشاركة
+        type: string
+      - name: footer
+        label: سطر التذييل
+        type: string
+      - name: parent_show
+        label: إظهار «من منتجات سيفديم»
+        type: boolean
+      - name: parent_label
+        label: نص الشارة قبل الشعار
+        type: string
+      - name: parent_name
+        label: اسم الجهة الأم
+        type: string
+      - name: parent_logo
+        label: شعار الجهة الأم (نسخة فاتحة صغيرة)
+        type: image
+        options:
+          media: images
+      - name: parent_url
+        label: رابط الجهة الأم
+        type: string
+      - name: parent_footer
+        label: سطر الجهة الأم في التذييل
+        type: string
+      - name: freelance_badge
+        label: نص شارة العمل الحر
+        type: string
+      - name: license_title
+        label: عنوان قسم الوثيقة
+        type: string
+      - name: license_issuer
+        label: الجهة المصدرة للوثيقة
+        type: string
+      - name: license_button
+        label: نص زر عرض الوثيقة
+        type: string
+      - name: red
+        label: اللون الأحمر
+        type: string
+        description: رمز اللون مثل #E94E37
+      - name: green
+        label: اللون الأخضر (الزر الرئيسي)
+        type: string
+      - name: background
+        label: لون الخلفية
         type: string
   - name: docs
     label: الوثائق (السياسات والأدلة)
