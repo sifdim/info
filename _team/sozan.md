@@ -1,22 +1,13 @@
 ---
-slug: sozan
 name: سوزان الحفظي
+slug: sozan
 name_en: Sozan Alhefdhi
-role: عضو الفريق التنفيذي
+role: " عضو فريق بِكسلة"
 org: بِكسلة
-photo: ''
-bio: ''
-projects: []
-phone: ''
-whatsapp: ''
-email: ''
-links: []
+photo: /assets/img/team/IMG_5960.jpg
 freelance: true
-license_field: ''
-license_number: ''
-license_expiry: ''
-license_file: ''
 save_contact: true
+noindex: false
 order: 2
 published: true
 ---
