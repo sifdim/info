@@ -29,3 +29,7 @@ defaults:
 exclude:
   - README.md
   - sifdim-website.zip
+
+# ملف التبليغ عن الثغرات: sifdim.sa/.well-known/security.txt
+include:
+  - .well-known
