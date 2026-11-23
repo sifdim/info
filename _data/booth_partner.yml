@@ -1,14 +1,12 @@
-# شريك العرض في البوث: تُعدَّل من لوحة التحكم «شريك العرض: ساق الجوري».
-# صفحة الشريك: sifdim.sa/saq ، والشكر يظهر أسفل شاشة البوث (sifdim.sa/join/screen).
 saqaljori:
   show: true
   name: ساق الجوري
   tagline: تنسيق الورد والحفلات في أبها
-  logo: ''
-  logo_light: ''
-  whatsapp: ''
-  message: السلام عليكم، جايكم من بوث بِكسلة في أسبوع ريادة الأعمال، ومعي كود الخصم BIXALA5
+  logo: /assets/img/SaqAljori_Arabic_AllGold_1000px.png
+  logo_light: /assets/img/SaqAljori_Arabic_Original_Glow_1000px-1.png
+  whatsapp: "966564347555"
+  message: السلام عليكم، جايكم من بوث بِكسلة في أسبوع ريادة الأعمال، ومعي كود
+    الخصم BIXALA5
   code: BIXALA5
   offer: خصم 5% لطلب واحد، عبر الواتساب أو بزيارة المحل
-  maps: ''
-  instagram: ''
+  maps: https://maps.app.goo.gl/u5hYQTMZjUzpVxnV8
