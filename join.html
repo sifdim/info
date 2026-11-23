@@ -1,0 +1,301 @@
+---
+# استمارة الاهتمام: صفحة مستقلة على sifdim.sa/join ولا يشملها وضع «تحت الإنشاء».
+# النصوص العامة ورابط الحفظ من لوحة التحكم: «استمارة الاهتمام» (ملف _data/join.yml).
+layout: null
+permalink: /join/
+---
+{%- assign s = site.data.settings -%}
+{%- assign J = site.data.join -%}
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{{ J.title }} | بِكسلة من سيفديم</title>
+  <meta name="description" content="{{ J.lead | strip_newlines | escape }}">
+  <meta name="theme-color" content="{{ site.data.theme.navy | default: '#0B1426' }}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="سيفديم">
+  <meta property="og:title" content="{{ J.title | escape }} | بِكسلة من سيفديم">
+  <meta property="og:description" content="{{ J.lead | strip_newlines | escape }}">
+  <meta property="og:image" content="{{ s.og_image | default: '/assets/img/qatt-band.png' | absolute_url }}">
+  <link rel="icon" type="image/png" href="{{ s.favicon | default: '/assets/img/favicon.png' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/img/apple-touch-icon.png' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/brand.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/join.css' | relative_url }}">
+  {% include theme.html %}
+  {%- if s.umami_website_id != blank %}
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="{{ s.umami_website_id }}"></script>
+  {%- endif %}
+</head>
+<body class="join-page">
+
+<header class="jh">
+  <div class="jh-in">
+    <a class="parent" href="{{ '/' | relative_url }}"><span>من منتجات</span><img src="{{ s.logo | default: '/assets/img/logo-on-dark.png' | relative_url }}" alt="سيفديم" height="22"></a>
+    <img class="bx" src="{{ '/assets/img/join/bixala-on-dark.svg' | relative_url }}" alt="بِكسلة" width="1570" height="576">
+    {%- if J.event_show and J.event_label != blank %}
+    <p class="event"><i aria-hidden="true"></i>{{ J.event_label }}</p>
+    {%- endif %}
+    <h1>{{ J.title }}</h1>
+    <p class="lead">{{ J.lead }}</p>
+  </div>
+</header>
+
+<main class="jm">
+{%- if J.open == false %}
+  <section class="card closed"><p>{{ J.closed_text }}</p></section>
+{%- else %}
+  <form id="join" class="card" novalidate data-endpoint="{{ J.endpoint | strip | escape }}">
+
+    <fieldset class="step">
+      <legend><span class="n" aria-hidden="true">1</span>من أنت؟</legend>
+      <div class="who" role="radiogroup" aria-label="صفتك">
+        <label class="opt">
+          <input type="radio" name="category" value="artisan" data-label="حرفي أو صاحب قطعة موروثة" data-step="عن حرفتك أو قطعتك">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span>
+          <span class="t"><b>حرفي أو صاحب قطعة موروثة</b><small>أريد رقمنة قطعي وحفظ قصتها</small></span>
+          <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="category" value="buyer" data-label="مشترٍ: سائح أو هاوٍ أو فندق" data-step="ماذا تبحث عنه">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+          <span class="t"><b>سائح أو هاوي جمع أو فندق</b><small>أبحث عن قطع أصيلة بقصتها</small></span>
+          <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="category" value="developer" data-label="مطوّر ألعاب أو استوديو" data-step="عن عملك">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 11h4M8 9v4M15 12h.01M18 10h.01"/><path d="M17.32 5H6.68a4 4 0 0 0-3.98 3.59C2.6 9.42 2 14.46 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.41-1.41A2 2 0 0 1 9.83 16h4.34a2 2 0 0 1 1.41.59L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.55-.6-6.58-.69-7.26A4 4 0 0 0 17.32 5z"/></svg></span>
+          <span class="t"><b>مطوّر ألعاب أو استوديو</b><small>أحتاج نماذج تراثية موثّقة</small></span>
+          <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="category" value="freelancer" data-label="يريد العمل الحر مع سيفديم" data-step="مهاراتك">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg></span>
+          <span class="t"><b>أريد العمل الحر مع سيفديم</b><small>أتأهل في مشاريعها وأعمل بعقود موثّقة</small></span>
+          <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        </label>
+        <label class="opt">
+          <input type="radio" name="category" value="partner" data-label="شريك أو مستثمر" data-step="نوع اهتمامك">
+          <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg></span>
+          <span class="t"><b>شريك أو مستثمر</b><small>أريد الشراكة أو الاستثمار أو الدعم</small></span>
+          <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+        </label>
+      </div>
+      <p class="err" id="err-category" hidden>اختر صفتك لنكمل.</p>
+    </fieldset>
+
+    <div id="rest" hidden>
+      <fieldset class="step">
+        <legend><span class="n" aria-hidden="true">2</span>بياناتك</legend>
+        <div class="grid">
+          <div class="f">
+            <label for="name">الاسم</label>
+            <input id="name" name="name" autocomplete="name" maxlength="80" required>
+            <p class="err" hidden>اكتب اسمك.</p>
+          </div>
+          <div class="f">
+            <label for="phone">رقم الجوال</label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" dir="ltr" placeholder="05xxxxxxxx" maxlength="20" required>
+            <p class="err" hidden>اكتب رقم جوال صحيحاً مثل 0512345678، أو رقماً دولياً يبدأ برمز الدولة.</p>
+          </div>
+          <div class="f">
+            <label for="email">البريد <i>اختياري</i></label>
+            <input id="email" name="email" type="email" autocomplete="email" dir="ltr" maxlength="120">
+            <p class="err" hidden>البريد غير صحيح.</p>
+          </div>
+          <div class="f">
+            <label for="city">المدينة <i>اختياري</i></label>
+            <input id="city" name="city" list="cities" autocomplete="address-level2" maxlength="60">
+          </div>
+        </div>
+        <datalist id="cities">
+          <option value="أبها"><option value="خميس مشيط"><option value="النماص"><option value="رجال ألمع"><option value="محايل عسير"><option value="تنومة"><option value="سراة عبيدة"><option value="أحد رفيدة"><option value="بلقرن"><option value="ظهران الجنوب"><option value="بيشة"><option value="الرياض"><option value="جدة"><option value="الدمام">
+        </datalist>
+      </fieldset>
+
+      <fieldset class="step">
+        <legend><span class="n" aria-hidden="true">3</span><span id="step3">تفاصيل</span></legend>
+
+        <div class="group" data-cat="artisan" hidden>
+          <div class="q" data-label="الصفة">
+            <p class="ql">أنت</p>
+            <div class="pills">
+              <label><input type="radio" name="a_role" value="حرفي أو حرفية" required><span>حرفي أو حرفية</span></label>
+              <label><input type="radio" name="a_role" value="عائلة أو فرد يملك قطعة موروثة"><span>أملك قطعة موروثة</span></label>
+            </div>
+            <p class="err" hidden>اختر واحداً.</p>
+          </div>
+          <div class="q f" data-label="الحرفة أو نوع القطعة">
+            <label for="a_craft" class="ql">الحرفة أو نوع القطعة</label>
+            <select id="a_craft" name="a_craft" required>
+              <option value="">اختر</option>
+              <option>القط العسيري</option><option>الحلي والفضة</option><option>الخوص والسعف</option><option>الفخار</option><option>النسيج والحياكة</option><option>الخشب والأبواب</option><option>الجلود</option><option>أخرى</option>
+            </select>
+            <p class="err" hidden>اختر الحرفة أو نوع القطعة.</p>
+          </div>
+          <div class="q f" data-label="عدد القطع تقريباً">
+            <label for="a_pieces" class="ql">كم قطعة لديك تقريباً؟ <i>اختياري</i></label>
+            <select id="a_pieces" name="a_pieces">
+              <option value="">اختر</option>
+              <option>من 1 إلى 5</option><option>من 6 إلى 20</option><option>من 21 إلى 100</option><option>أكثر من 100</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="group" data-cat="buyer" hidden>
+          <div class="q" data-label="النوع">
+            <p class="ql">أنت</p>
+            <div class="pills">
+              <label><input type="radio" name="b_type" value="سائح أو زائر" required><span>سائح أو زائر</span></label>
+              <label><input type="radio" name="b_type" value="هاوٍ لجمع القطع"><span>هاوٍ لجمع القطع</span></label>
+              <label><input type="radio" name="b_type" value="فندق أو منشأة ضيافة"><span>فندق أو منشأة ضيافة</span></label>
+            </div>
+            <p class="err" hidden>اختر واحداً.</p>
+          </div>
+          <div class="q" data-label="يهمك">
+            <p class="ql">ما الذي يهمك؟ <i>اختر ما يناسبك</i></p>
+            <div class="pills">
+              <label><input type="checkbox" name="b_want" value="قطعة للاقتناء"><span>قطعة للاقتناء</span></label>
+              <label><input type="checkbox" name="b_want" value="هدايا"><span>هدايا</span></label>
+              <label><input type="checkbox" name="b_want" value="عرض قطع في منشأتي"><span>عرض قطع في منشأتي</span></label>
+              <label><input type="checkbox" name="b_want" value="طلب بالجملة"><span>طلب بالجملة</span></label>
+            </div>
+          </div>
+          <div class="grid" data-when="b_type=فندق أو منشأة ضيافة" hidden>
+            <div class="q f" data-label="المنشأة">
+              <label for="b_org" class="ql">اسم المنشأة</label>
+              <input id="b_org" name="b_org" maxlength="100" required>
+              <p class="err" hidden>اكتب اسم المنشأة.</p>
+            </div>
+            <div class="q f" data-label="المنصب">
+              <label for="b_pos" class="ql">منصبك <i>اختياري</i></label>
+              <input id="b_pos" name="b_pos" maxlength="80">
+            </div>
+          </div>
+        </div>
+
+        <div class="group" data-cat="developer" hidden>
+          <div class="q" data-label="النوع">
+            <p class="ql">أنت</p>
+            <div class="pills">
+              <label><input type="radio" name="d_type" value="مطوّر مستقل" required><span>مطوّر مستقل</span></label>
+              <label><input type="radio" name="d_type" value="استوديو أو شركة"><span>استوديو أو شركة</span></label>
+            </div>
+            <p class="err" hidden>اختر واحداً.</p>
+          </div>
+          <div class="q f" data-label="الاستوديو" data-when="d_type=استوديو أو شركة" hidden>
+            <label for="d_org" class="ql">اسم الاستوديو أو الشركة</label>
+            <input id="d_org" name="d_org" maxlength="100" required>
+            <p class="err" hidden>اكتب اسم الاستوديو أو الشركة.</p>
+          </div>
+          <div class="q" data-label="يحتاج">
+            <p class="ql">ما الذي تحتاجه؟ <i>اختر ما يناسبك</i></p>
+            <div class="pills">
+              <label><input type="checkbox" name="d_need" value="ترخيص نماذج جاهزة"><span>ترخيص نماذج جاهزة</span></label>
+              <label><input type="checkbox" name="d_need" value="رقمنة قطع حسب الطلب"><span>رقمنة قطع حسب الطلب</span></label>
+              <label><input type="checkbox" name="d_need" value="شراكة في لعبة أو تجربة"><span>شراكة في لعبة أو تجربة</span></label>
+            </div>
+          </div>
+          <div class="q f" data-label="المحرك">
+            <label for="d_engine" class="ql">المحرك الذي تعمل عليه <i>اختياري</i></label>
+            <select id="d_engine" name="d_engine">
+              <option value="">اختر</option>
+              <option>Unreal Engine</option><option>Unity</option><option>Godot</option><option>أخرى</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="group" data-cat="freelancer" hidden>
+          <div class="q" data-label="المهارات" data-min="1">
+            <p class="ql">ما مهاراتك؟ <i>اختر واحدة أو أكثر</i></p>
+            <div class="pills">
+              <label><input type="checkbox" name="f_skill" value="التصوير"><span>التصوير</span></label>
+              <label><input type="checkbox" name="f_skill" value="النمذجة ثلاثية الأبعاد"><span>النمذجة ثلاثية الأبعاد</span></label>
+              <label><input type="checkbox" name="f_skill" value="التصميم"><span>التصميم</span></label>
+              <label><input type="checkbox" name="f_skill" value="البرمجة"><span>البرمجة</span></label>
+              <label><input type="checkbox" name="f_skill" value="التسويق وصناعة المحتوى"><span>التسويق وصناعة المحتوى</span></label>
+              <label><input type="checkbox" name="f_skill" value="التشغيل والدعم الفني"><span>التشغيل والدعم الفني</span></label>
+              <label><input type="checkbox" name="f_skill" value="إدارة المشاريع"><span>إدارة المشاريع</span></label>
+            </div>
+            <p class="err" hidden>اختر مهارة واحدة على الأقل.</p>
+          </div>
+          <div class="q" data-label="وثيقة العمل الحر">
+            <p class="ql">وثيقة العمل الحر</p>
+            <div class="pills">
+              <label><input type="radio" name="f_doc" value="لديه وثيقة" required><span>لديّ وثيقة</span></label>
+              <label><input type="radio" name="f_doc" value="يعمل على استخراجها"><span>أعمل على استخراجها</span></label>
+              <label><input type="radio" name="f_doc" value="ليس بعد"><span>ليس بعد</span></label>
+            </div>
+            <p class="err" hidden>اختر واحداً.</p>
+          </div>
+          <div class="q f" data-label="رابط الأعمال">
+            <label for="f_link" class="ql">رابط أعمالك <i>اختياري</i></label>
+            <input id="f_link" name="f_link" type="url" dir="ltr" inputmode="url" placeholder="https://" maxlength="200">
+            <p class="err" hidden>الرابط غير صحيح، ابدأه بـ https://</p>
+          </div>
+        </div>
+
+        <div class="group" data-cat="partner" hidden>
+          <div class="q" data-label="نوع الاهتمام">
+            <p class="ql">نوع اهتمامك</p>
+            <div class="pills">
+              <label><input type="radio" name="p_type" value="استثمار" required><span>استثمار</span></label>
+              <label><input type="radio" name="p_type" value="شراكة"><span>شراكة</span></label>
+              <label><input type="radio" name="p_type" value="رعاية أو دعم"><span>رعاية أو دعم</span></label>
+              <label><input type="radio" name="p_type" value="جهة حكومية أو غير ربحية"><span>جهة حكومية أو غير ربحية</span></label>
+            </div>
+            <p class="err" hidden>اختر واحداً.</p>
+          </div>
+          <div class="q f" data-label="الجهة">
+            <label for="p_org" class="ql">الجهة التي تمثلها <i>اختياري</i></label>
+            <input id="p_org" name="p_org" maxlength="100">
+          </div>
+        </div>
+
+        <div class="f note">
+          <label for="note">ملاحظة <i>اختياري</i></label>
+          <textarea id="note" name="note" rows="3" maxlength="500"></textarea>
+        </div>
+      </fieldset>
+
+      <div class="consent">
+        <label class="chk">
+          <input type="checkbox" name="consent" id="consent" required>
+          <span>عمري 18 سنة فأكثر، وأوافق على أن تحفظ مؤسسة سيفديم بياناتي لتتواصل معي بشأن ما سجّلت له، وفق <a href="{{ '/docs/sif-pol-01/' | relative_url }}" target="_blank" rel="noopener">سياسة حماية البيانات الشخصية</a>.</span>
+        </label>
+        <p class="err" id="err-consent" hidden>نحتاج موافقتك لنحفظ تسجيلك.</p>
+        <label class="chk">
+          <input type="checkbox" name="news">
+          <span>أريد أن تصلني أخبار سيفديم ومنتجاتها <i>اختياري</i></span>
+        </label>
+      </div>
+
+      <div class="hp" aria-hidden="true"><label>اترك هذا الحقل فارغاً<input name="website" tabindex="-1" autocomplete="off"></label></div>
+
+      <button class="send" type="submit"><span class="sp" aria-hidden="true"></span><span class="lbl">أرسل التسجيل</span></button>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </div>
+  </form>
+
+  <section class="card done" id="done" hidden tabindex="-1" aria-labelledby="done-h">
+    <span class="ok" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></span>
+    <h2 id="done-h">{{ J.success_title }}</h2>
+    <p>{{ J.success_text }}</p>
+    <button type="button" class="again" id="again">تسجيل شخص آخر</button>
+  </section>
+{%- endif %}
+</main>
+
+<footer class="jf">
+  <img class="qatt" src="{{ '/assets/img/qatt-band.png' | relative_url }}" alt="" width="2400" height="594">
+  <div class="jf-in">
+    <span>{{ s.footer_line }}</span>
+    <span>{{ s.footer_motto }}</span>
+  </div>
+</footer>
+
+<script src="{{ '/assets/js/join.js' | relative_url }}" defer></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+---
+# شاشة البوث: تُفتح على الشاشة المستقلة وتعرض باركود الاستمارة.
+# افتح sifdim.sa/join/screen ثم اضغط على الشاشة لملء الشاشة.
+layout: null
+permalink: /join/screen/
+---
+{%- assign s = site.data.settings -%}
+{%- assign J = site.data.join -%}
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>شاشة البوث | بِكسلة من سيفديم</title>
+  <link rel="icon" type="image/png" href="{{ s.favicon | default: '/assets/img/favicon.png' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/brand.css' | relative_url }}">
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;overflow:hidden;background:var(--sifdim-navy)}
+    body{font-family:var(--font);color:#E9E4D8;cursor:pointer;-webkit-font-smoothing:antialiased}
+    img{display:block}
+    .screen{position:relative;isolation:isolate;height:100vh;display:grid;grid-template-rows:auto 1fr auto}
+    .screen::before{content:"";position:absolute;inset:0;z-index:-1;opacity:.55;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='%23D8A657' fill-opacity='.28'%3E%3Cpath d='M36 33.4l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3Cpath d='M0-2.6L2.6 0 0 2.6-2.6 0zM72-2.6l2.6 2.6-2.6 2.6-2.6-2.6zM0 69.4L2.6 72 0 74.6-2.6 72zM72 69.4l2.6 2.6-2.6 2.6-2.6-2.6z'/%3E%3C/g%3E%3C/svg%3E");
+      background-size:6.5vh 6.5vh;-webkit-mask-image:linear-gradient(to left,#000 10%,transparent 70%);mask-image:linear-gradient(to left,#000 10%,transparent 70%)}
+    .top{display:flex;justify-content:space-between;align-items:center;padding:4.5vh 5vw 0}
+    .top .bx{height:9vh;width:auto}
+    .parent{display:flex;align-items:center;gap:1.2vh;padding:.8vh 2vh;border:1px solid var(--navy-2);border-radius:99px;font-size:2vh;color:#AEB6C6}
+    .parent img{height:3.4vh;width:auto}
+    .main{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6vw;padding:0 5vw}
+    .kick{display:flex;align-items:center;gap:1.4vh;font-size:2.6vh;font-weight:600;color:var(--sifdim-gold)}
+    .kick i{width:1.2vh;height:1.2vh;background:var(--sifdim-gold);transform:rotate(45deg)}
+    h1{margin:1.6vh 0 0;font-size:9.5vh;line-height:1.12;font-weight:700;color:#FBF8F2}
+    .sub{margin:2vh 0 0;font-size:3.6vh;line-height:1.5;color:#C3CAD6}
+    .who{list-style:none;margin:4.5vh 0 0;padding:0;display:flex;flex-direction:column;gap:1.5vh}
+    .who li{display:flex;align-items:center;gap:2vh;width:fit-content;padding:1.2vh 3vh 1.2vh 2.4vh;border:1.5px solid var(--navy-2);border-radius:99px;font-size:3vh;font-weight:500;color:#E9E4D8;transition:background-color .5s,border-color .5s,color .5s}
+    .who li b{width:1.3vh;height:1.3vh;flex:none;background:var(--sifdim-gold);transform:rotate(45deg);opacity:.55;transition:opacity .5s}
+    .who li.on{background:var(--sifdim-gold);border-color:var(--sifdim-gold);color:var(--sifdim-navy);font-weight:600}
+    .who li.on b{background:var(--sifdim-navy);opacity:1}
+    .qr{display:flex;flex-direction:column;align-items:center;gap:2.4vh}
+    .qr-card{background:#fff;border-radius:3vh;padding:3.4vh;box-shadow:0 3vh 8vh -4vh rgba(0,0,0,.6)}
+    .qr-card img{width:52vh;height:52vh;image-rendering:pixelated}
+    .qr .url{direction:ltr;font-size:4.6vh;font-weight:700;letter-spacing:.02em;color:var(--sifdim-gold)}
+    .qr .how{font-size:2.6vh;color:#AEB6C6}
+    .foot{position:relative}
+    .foot img{width:100%;height:10vh;object-fit:cover;object-position:center}
+    .hint{position:fixed;bottom:12vh;left:50%;transform:translateX(-50%);padding:1vh 2.4vh;border-radius:99px;background:rgba(11,20,38,.85);border:1px solid var(--navy-2);font-size:1.8vh;color:#AEB6C6;transition:opacity .4s}
+    :fullscreen .hint,.hint.off{opacity:0}
+    @media (prefers-reduced-motion: reduce){.who li,.who li b{transition:none}}
+  </style>
+</head>
+<body>
+<div class="screen">
+  <header class="top">
+    <img class="bx" src="{{ '/assets/img/join/bixala-on-dark.svg' | relative_url }}" alt="بِكسلة">
+    <span class="parent">من منتجات<img src="{{ s.logo | default: '/assets/img/logo-on-dark.png' | relative_url }}" alt="سيفديم"></span>
+  </header>
+
+  <main class="main">
+    <div>
+      {%- if J.event_show and J.event_label != blank %}
+      <p class="kick"><i aria-hidden="true"></i>{{ J.event_label }}</p>
+      {%- endif %}
+      <h1>سجّل اهتمامك</h1>
+      <p class="sub">امسح الرمز بكاميرا جوالك، واختر صفتك</p>
+      <ul class="who" id="who">
+        <li class="on"><b aria-hidden="true"></b>حرفي أو صاحب قطعة موروثة</li>
+        <li><b aria-hidden="true"></b>سائح أو هاوي جمع أو فندق</li>
+        <li><b aria-hidden="true"></b>مطوّر ألعاب أو استوديو</li>
+        <li><b aria-hidden="true"></b>العمل الحر مع سيفديم</li>
+        <li><b aria-hidden="true"></b>شريك أو مستثمر</li>
+      </ul>
+    </div>
+    <div class="qr">
+      <div class="qr-card"><img src="{{ '/assets/img/join/qr-screen.svg' | relative_url }}" alt="باركود صفحة التسجيل sifdim.sa/join"></div>
+      <p class="url">sifdim.sa/join</p>
+    </div>
+  </main>
+
+  <footer class="foot"><img src="{{ '/assets/img/qatt-band.png' | relative_url }}" alt=""></footer>
+</div>
+<p class="hint" id="hint">اضغط على الشاشة لملء الشاشة</p>
+
+<script>
+(function () {
+  // تمييز فئة بعد أخرى
+  var items = document.querySelectorAll('#who li'), i = 0;
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    setInterval(function () {
+      items[i].classList.remove('on');
+      i = (i + 1) % items.length;
+      items[i].classList.add('on');
+    }, 2600);
+  }
+  // ملء الشاشة بضغطة، ومنع الشاشة من النوم
+  var hint = document.getElementById('hint');
+  document.addEventListener('click', function () {
+    var el = document.documentElement;
+    if (!document.fullscreenElement && el.requestFullscreen) el.requestFullscreen().catch(function () {});
+    hint.classList.add('off');
+  });
+  setTimeout(function () { hint.classList.add('off'); }, 12000);
+  var lock = null;
+  function wake() { if ('wakeLock' in navigator) navigator.wakeLock.request('screen').then(function (l) { lock = l; }).catch(function () {}); }
+  wake();
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') wake(); });
+})();
+</script>
+</body>
+</html>
