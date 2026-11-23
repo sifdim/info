@@ -1,0 +1,4 @@
+Contact: mailto:info@sifdim.sa
+Expires: 2027-11-23T00:00:00Z
+Preferred-Languages: ar, en
+Canonical: https://sifdim.sa/.well-known/security.txt
