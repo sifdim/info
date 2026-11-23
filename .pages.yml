@@ -1184,3 +1184,56 @@ content:
       - name: closed_text
         label: رسالة الإغلاق
         type: text
+
+  - name: booth_partner
+    label: شريك العرض في البوث (ساق الجوري)
+    type: file
+    path: _data/booth_partner.yml
+    format: yaml
+    fields:
+      - name: saqaljori
+        label: ساق الجوري
+        type: object
+        fields:
+          - name: show
+            label: إظهار الشكر أسفل شاشة البوث
+            type: boolean
+          - name: name
+            label: الاسم
+            type: string
+          - name: tagline
+            label: الوصف المختصر
+            type: string
+          - name: logo
+            label: الشعار (نسخة للخلفية الداكنة)
+            type: image
+            description: يظهر أسفل شاشة البوث. PNG شفاف أو SVG.
+            options:
+              media: images
+          - name: logo_light
+            label: الشعار (نسخة للخلفية الفاتحة)
+            type: image
+            description: يظهر في صفحة الشريك sifdim.sa/saq
+            options:
+              media: images
+          - name: whatsapp
+            label: رقم الواتساب
+            type: string
+            description: بالصيغة الدولية بلا + ولا مسافات، مثل 9665XXXXXXXX. بدونه يختفي زر الواتساب.
+          - name: message
+            label: الرسالة الجاهزة في الواتساب
+            type: text
+          - name: code
+            label: كود الخصم
+            type: string
+          - name: offer
+            label: وصف العرض
+            type: string
+          - name: maps
+            label: رابط موقع المحل على الخريطة
+            type: string
+            description: رابط قوقل ماب. بدونه يختفي زر الموقع.
+          - name: instagram
+            label: رابط إنستقرام
+            type: string
+            description: اختياري. بدونه يختفي الزر.
