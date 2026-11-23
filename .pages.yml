@@ -1147,3 +1147,40 @@ content:
       - name: ticker_en_seconds
         label: مدة دورة الشريط الإنجليزي بالثواني
         type: number
+# الصق هذا في آخر ملف .pages.yml كما هو (بالمسافات نفسها)
+  - name: join
+    label: استمارة الاهتمام (sifdim.sa/join)
+    type: file
+    path: _data/join.yml
+    format: yaml
+    fields:
+      - name: open
+        label: الاستمارة مفتوحة
+        type: boolean
+        description: أطفئه لإغلاق الاستمارة مؤقتاً، فتظهر رسالة الإغلاق بدلها.
+      - name: endpoint
+        label: رابط الحفظ (تطبيق Apps Script)
+        type: string
+        description: الرابط الذي ينتهي بـ ‎/exec بعد نشر سكربت الجدول. بدونه لا تُحفظ التسجيلات.
+      - name: title
+        label: العنوان الكبير
+        type: string
+      - name: lead
+        label: النبذة تحت العنوان
+        type: text
+      - name: event_show
+        label: إظهار اسم الفعالية
+        type: boolean
+      - name: event_label
+        label: اسم الفعالية
+        type: string
+        description: يظهر فوق العنوان في الصفحة وفي شاشة البوث (sifdim.sa/join/screen).
+      - name: success_title
+        label: عنوان رسالة النجاح
+        type: string
+      - name: success_text
+        label: نص رسالة النجاح
+        type: text
+      - name: closed_text
+        label: رسالة الإغلاق
+        type: text
