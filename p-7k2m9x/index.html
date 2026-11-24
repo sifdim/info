@@ -70,7 +70,19 @@ button:focus-visible{outline:3px solid var(--scan);outline-offset:2px}
 #lb .sw button{height:56px;padding:0 26px;border-radius:28px;border:2px solid var(--line);background:transparent;color:var(--sand);font:600 24px P;cursor:pointer}
 #lb .sw button.act{background:var(--clay);border-color:var(--clay);color:#fff}
 #lb .cap{position:absolute;top:40px;right:60px;font-size:30px;font-weight:600;color:var(--mute)}
-#intro{position:absolute;inset:0;z-index:40;background:#0F1B24;display:none}#intro.on{display:block}#intro video{width:100%;height:100%;display:block}
+#intro{position:absolute;inset:0;z-index:40;background:#0F1B24;display:none}#intro.on{display:block}#intro video{width:100%;height:100%;display:block;cursor:pointer}
+#ip{position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:0;background:rgba(243,231,211,.92);color:#0F1B24;font-size:60px;cursor:pointer;display:none;padding-left:12px}
+#intro.paused #ip{display:block}
+#ic{position:absolute;left:60px;right:60px;bottom:26px;direction:rtl;opacity:0;transition:opacity .2s;display:flex;flex-direction:column;gap:12px}
+#intro.ui #ic,#intro.paused #ic,#ic:focus-within{opacity:1}
+#ich,#icr{display:flex;gap:10px;align-items:center}
+#ic button{height:46px;padding:0 18px;border-radius:23px;border:1.5px solid rgba(160,170,180,.5);background:rgba(15,27,36,.86);color:#F3E7D3;font:600 20px P;cursor:pointer;white-space:nowrap}
+#ic button.act{background:#0B7F76;border-color:#0B7F76}
+#ich button{flex:1;height:40px;font-size:18px;padding:0 8px}
+#isk{flex:1;direction:ltr;accent-color:#2FE0D0;height:6px}
+#itm{font:600 20px P;color:#AEB8C0;direction:ltr;min-width:96px;text-align:center}
+#laser{position:fixed;left:0;top:0;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:#FF3B30;box-shadow:0 0 0 6px rgba(255,59,48,.28),0 0 26px 8px rgba(255,59,48,.55);pointer-events:none;z-index:99;display:none}
+body.laser #laser{display:block}body.laser,body.laser *{cursor:none!important}
 </style>
 </head>
 <body>
@@ -138,8 +150,11 @@ button:focus-visible{outline:3px solid var(--scan);outline-offset:2px}
   <video id="gv2" muted loop playsinline controls></video>
   <div class="sw" id="lbs"><button type="button" data-clip="v/market-wide.mp4">لقطة السوق</button><button type="button" data-clip="v/market-close.mp4">لقطة قريبة</button></div>
 </div>
-<div id="intro"><video id="iv" src="v/intro.mp4" muted playsinline preload="auto"></video></div>
-<div id="ui"><button id="pv" type="button" aria-label="السابق">‹</button><span id="cnt"></span><button id="nx" type="button" aria-label="التالي">›</button><button id="mb" type="button">القائمة</button><button id="b3" type="button">المجسم</button><button id="bg" type="button">اللعبة</button><span id="tm" style="visibility:hidden">0:00</span></div>
+<div id="intro"><video id="iv" src="v/intro.mp4" muted playsinline preload="auto"></video>
+<button id="ip" type="button" aria-label="تشغيل">▶</button>
+<div id="ic"><div id="ich"></div><div id="icr"><button id="ipp" type="button">إيقاف</button><button id="irs" type="button">من البداية</button><input id="isk" type="range" min="0" max="50" step="0.1" value="0" aria-label="موضع المشهد"><span id="itm">0:00</span><button id="iau" type="button">توقف بعد كل مشهد</button><button id="inx" type="button">إلى الشرائح ›</button></div></div></div>
+<div id="laser"></div>
+<div id="ui"><button id="pv" type="button" aria-label="السابق">‹</button><span id="cnt"></span><button id="nx" type="button" aria-label="التالي">›</button><button id="mb" type="button">القائمة</button><button id="b3" type="button">المجسم</button><button id="bg" type="button">اللعبة</button><button id="bi" type="button">القصة</button><button id="bx" type="button">مؤشر</button><span id="tm" style="visibility:hidden">0:00</span></div>
 </div>
 <script>
 (function(){
@@ -155,11 +170,24 @@ button:focus-visible{outline:3px solid var(--scan);outline-offset:2px}
     [].forEach.call($('menu').children,function(b,n){b.classList.toggle('cur',n===i);});
     try{history.replaceState(null,'','#'+(i+1));}catch(e){}
   }
-  function go(n){i=Math.max(0,Math.min(S.length-1,n));step=0;show();}
-  var IN=$('intro'), iv=$('iv'), played=false;
-  function intro(on){IN.classList.toggle('on',on);if(on){played=true;menu(false);iv.currentTime=0;iv.play().catch(function(){});}else iv.pause();}
-  function next(){if(t0===null)t0=Date.now();if(IN.classList.contains('on')){intro(false);go(1);return;}if(i===0&&!played&&!PRINT){intro(true);return;}if(step<steps(i)){step++;show();}else if(i<S.length-1)go(i+1);}
-  function prev(){if(IN.classList.contains('on')){intro(false);return;}if(step>0){step--;show();}else if(i>0){i--;step=steps(i);show();}}
+  function go(n){if(IN.classList.contains('on')){IN.classList.remove('on');iv.pause();}i=Math.max(0,Math.min(S.length-1,n));step=0;show();}
+  var IN=$('intro'), iv=$('iv'), stopMode=false, lastT=0;
+  var SC=[[0,'التجربة',7.0],[7.8,'البحث',15.2],[16.1,'القطعة',21.3],[22.2,'المكالمة',26.1],[26.8,'الأرقام',35.4],[36.2,'من الصورة إلى التجربة',44.8],[45.6,'الختام',50]];
+  function inOn(){return IN.classList.contains('on');}
+  function iplay(){iv.play().catch(function(){});}
+  function itoggle(){if(iv.ended){iv.currentTime=0;lastT=0;iplay();}else if(iv.paused)iplay();else iv.pause();}
+  function iseek(t){iv.currentTime=t;lastT=t;isync();}
+  function isync(){var t=iv.currentTime||0;IN.classList.toggle('paused',iv.paused&&!iv.ended);$('ipp').textContent=iv.paused?'تشغيل':'إيقاف';
+    if(document.activeElement!==$('isk'))$('isk').value=t;$('itm').textContent='0:'+('0'+Math.floor(t)).slice(-2)+' / 0:50';
+    var c=0;SC.forEach(function(x,n){if(t>=x[0]-.05)c=n;});[].forEach.call($('ich').children,function(b,n){b.classList.toggle('act',n===c);});}
+  SC.forEach(function(x,n){var b=document.createElement('button');b.type='button';b.textContent=(n+1)+'. '+x[1];b.onclick=function(){iseek(x[0]);iplay();};$('ich').appendChild(b);});
+  (function loop(){if(inOn()){var t=iv.currentTime;if(stopMode&&!iv.paused){for(var n=0;n<SC.length-1;n++){var q=SC[n][2];if(lastT<q&&t>=q){iv.pause();break;}}}lastT=t;isync();}requestAnimationFrame(loop);})();
+  iv.onclick=itoggle;$('ip').onclick=itoggle;$('ipp').onclick=itoggle;$('irs').onclick=function(){iseek(0);iplay();};
+  $('isk').oninput=function(){iseek(+this.value);};$('isk').onchange=function(){this.blur();};
+  $('iau').onclick=function(){stopMode=!stopMode;this.classList.toggle('act',stopMode);};$('inx').onclick=function(){next();};
+  function intro(on,play){IN.classList.toggle('on',on);if(on){menu(false);i=0;step=0;show();iv.currentTime=0;lastT=0;if(play)iplay();else iv.pause();isync();}else iv.pause();}
+  function next(){if(t0===null)t0=Date.now();if(inOn()){intro(false);go(1);return;}if(i===0&&!PRINT){intro(true,true);return;}if(step<steps(i)){step++;show();}else if(i<S.length-1)go(i+1);}
+  function prev(){if(inOn()){intro(false);return;}if(i===1&&step===0&&!PRINT){intro(true,false);return;}if(step>0){step--;show();}else if(i>0){i--;step=steps(i);show();}}
   function menu(on){$('menu').classList.toggle('on',on);}
   // turntable
   var N=60, IM=[], fr=0, auto=true;
@@ -186,12 +214,23 @@ button:focus-visible{outline:3px solid var(--scan);outline-offset:2px}
   [].forEach.call($('lbs').children,function(b){b.onclick=function(){setClip(b.dataset.clip);};});
   [].forEach.call(document.querySelectorAll('.gv'),function(v){v.onclick=function(){lb('game',v.getAttribute('src'));};});
   $('lbx').onclick=function(){lb(null);};$('b3').onclick=function(){lb('model');};$('bg').onclick=function(){lb('game');};
-  $('nx').onclick=next;$('pv').onclick=prev;$('mb').onclick=function(){menu(!$('menu').classList.contains('on'));};
+  $('bi').onclick=function(){intro(true,true);};$('bx').onclick=function(){document.body.classList.toggle('laser');};$('nx').onclick=next;$('pv').onclick=prev;$('mb').onclick=function(){menu(!$('menu').classList.contains('on'));};
   [].forEach.call($('menu').children,function(b){b.onclick=function(){menu(false);go(+b.dataset.go);};});
   addEventListener('keydown',function(e){
     var K=e.key, open=$('lb').classList.contains('on');
-    if(K==='i'||K==='I'||K==='ه'){intro(!IN.classList.contains('on'));return;}
-    if(K==='Escape'){if(IN.classList.contains('on')){intro(false);return;}if(open)lb(null);else menu(false);return;}
+    if(K==='x'||K==='X'||K==='ء'){document.body.classList.toggle('laser');return;}
+    if(K==='i'||K==='I'||K==='ه'){intro(!inOn(),true);return;}
+    if(inOn()){
+      if(K===' '||K==='k'||K==='K'){e.preventDefault();itoggle();}
+      else if(K==='r'||K==='R'||K==='ق'){iseek(0);iplay();}
+      else if(/^[1-7]$/.test(K)){iseek(SC[+K-1][0]);iplay();}
+      else if(K==='ArrowUp'){e.preventDefault();iseek(Math.max(0,iv.currentTime-3));}
+      else if(K==='ArrowDown'){e.preventDefault();iseek(Math.min(49.9,iv.currentTime+3));}
+      else if(K==='ArrowLeft'||K==='PageDown'||K==='Enter'){e.preventDefault();next();}
+      else if(K==='ArrowRight'||K==='PageUp'||K==='Backspace'||K==='Escape'){e.preventDefault();prev();}
+      else if(K==='f'||K==='F'||K==='ب'){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}
+      return;}
+    if(K==='Escape'){if(open)lb(null);else menu(false);return;}
     if(K==='m'||K==='M'||K==='ة'){open?lb(null):lb('model');return;}
     if(K==='g'||K==='G'||K==='ل'){open?lb(null):lb('game');return;}
     if(open){if(K===' '){e.preventDefault();var v=$('gv2');if($('gv2').style.display!=='none'){v.paused?v.play():v.pause();}else auto=!auto;}return;}
@@ -209,7 +248,7 @@ button:focus-visible{outline:3px solid var(--scan);outline-offset:2px}
   for(var p=1;p<=19;p++){(new Image()).src='s/'+('0'+p).slice(-2)+'.jpg';}
   var h=parseInt(location.hash.slice(1),10);if(h>=1&&h<=S.length)i=h-1;
   window.__go=function(n){i=n;step=steps(n);show();paintAll();};window.__lb=lb;
-  var hid;addEventListener('mousemove',function(){$('ui').classList.add('on');clearTimeout(hid);hid=setTimeout(function(){$('ui').classList.remove('on');},1800);});
+  var hid;addEventListener('mousemove',function(e){$('laser').style.transform='translate('+e.clientX+'px,'+e.clientY+'px)';$('ui').classList.add('on');IN.classList.add('ui');clearTimeout(hid);hid=setTimeout(function(){$('ui').classList.remove('on');IN.classList.remove('ui');},1800);});
   show();
 })();
 </script>
