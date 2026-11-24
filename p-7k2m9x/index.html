@@ -83,6 +83,12 @@ button:focus-visible{outline:3px solid var(--scan);outline-offset:2px}
 #itm{font:600 20px P;color:#AEB8C0;direction:ltr;min-width:96px;text-align:center}
 #laser{position:fixed;left:0;top:0;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:#FF3B30;box-shadow:0 0 0 6px rgba(255,59,48,.28),0 0 26px 8px rgba(255,59,48,.55);pointer-events:none;z-index:99;display:none}
 body.laser #laser{display:block}body.laser,body.laser *{cursor:none!important}
+#join{position:absolute;left:0;top:0;width:850px;height:1080px;background:#0F1B24;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;transform:none;transition:opacity .8s;pointer-events:none}
+#join.in{pointer-events:auto}
+#join h3{font:700 68px P;color:#F3E7D3}
+#join img{width:430px;height:430px;background:#fff;padding:22px;border-radius:28px}
+#join p{font:500 32px P;color:#AEB8C0;text-align:center}
+#join span{font:600 34px P;color:#2FE0D0;direction:ltr}
 </style>
 </head>
 <body>
@@ -142,7 +148,7 @@ body.laser #laser{display:block}body.laser,body.laser *{cursor:none!important}
     </div>
   </section>
 <section class="sl" style="background-image:url(s/18.jpg)"></section>
-<section class="sl" style="background-image:url(s/19.jpg)"><video class="gv" data-zoom="1" src="v/market-close.mp4" muted loop playsinline preload="auto" style="left:0;top:0;width:850px;height:1080px;object-position:42% 50%"></video></section>
+<section class="sl" id="fin" data-steps="1" style="background-image:url(s/19.jpg)"><video class="gv" data-zoom="1" src="v/market-close.mp4" muted playsinline preload="auto" style="left:0;top:0;width:850px;height:1080px;object-position:42% 50%"></video><div id="join" data-step="1"><h3>شاركنا اهتمامك</h3><img src="f/qr-join.svg" alt="رمز صفحة شاركنا اهتمامك"><p>امسح الرمز وسجّل اهتمامك، ونتواصل معك</p><span>sifdim.sa/join</span></div></section>
 <div id="menu" role="dialog" aria-label="قائمة الشرائح"><button type="button" data-go="0"><b>1</b>الغلاف</button><button type="button" data-go="1"><b>2</b>من أين بدأت</button><button type="button" data-go="2"><b>3</b>زينب والوسيط</button><button type="button" data-go="3"><b>4</b>المشكلة</button><button type="button" data-go="4"><b>5</b>الحل</button><button type="button" data-go="5"><b>6</b>مستويان للخدمة</button><button type="button" data-go="6"><b>7</b>رحلة القطعة</button><button type="button" data-go="7"><b>8</b>نموذج الدخل</button><button type="button" data-go="8"><b>9</b>من البِكسل إلى العالم</button><button type="button" data-go="9"><b>10</b>السوق والفرصة</button><button type="button" data-go="10"><b>11</b>ما أثبتناه</button><button type="button" data-go="11"><b>12</b>منظومة سيفديم</button><button type="button" data-go="12"><b>13</b>رؤية 2030</button><button type="button" data-go="13"><b>14</b>التشغيل</button><button type="button" data-go="14"><b>15</b>الحوكمة</button><button type="button" data-go="15"><b>16</b>التصويت الإلكتروني</button><button type="button" data-go="16"><b>17</b>الفريق</button><button type="button" data-go="17"><b>18</b>ما علّمتنا التجربة</button><button type="button" data-go="18"><b>19</b>الدعوة: شراكة ميدانية</button><button type="button" data-go="19"><b>20</b>التمويل، المرحلة الثانية</button><button type="button" data-go="20"><b>21</b>الختام</button></div>
 <div id="lb" role="dialog">
   <button class="x" type="button" id="lbx">إغلاق</button><p class="cap" id="lbc"></p>
@@ -185,6 +191,7 @@ body.laser #laser{display:block}body.laser,body.laser *{cursor:none!important}
   iv.onclick=itoggle;$('ip').onclick=itoggle;$('ipp').onclick=itoggle;$('irs').onclick=function(){iseek(0);iplay();};
   $('isk').oninput=function(){iseek(+this.value);};$('isk').onchange=function(){this.blur();};
   $('iau').onclick=function(){stopMode=!stopMode;this.classList.toggle('act',stopMode);};$('inx').onclick=function(){next();};
+  $('fin').querySelector('video').addEventListener('ended',function(){if(i===S.length-1&&step<1){step=1;show();}});
   function intro(on,play){IN.classList.toggle('on',on);if(on){menu(false);i=0;step=0;show();iv.currentTime=0;lastT=0;if(play)iplay();else iv.pause();isync();}else iv.pause();}
   function next(){if(t0===null)t0=Date.now();if(inOn()){intro(false);go(1);return;}if(i===0&&!PRINT){intro(true,true);return;}if(step<steps(i)){step++;show();}else if(i<S.length-1)go(i+1);}
   function prev(){if(inOn()){intro(false);return;}if(i===1&&step===0&&!PRINT){intro(true,false);return;}if(step>0){step--;show();}else if(i>0){i--;step=steps(i);show();}}
